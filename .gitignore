@@ -1,4 +1,9 @@
+# IntelliJ
 **/.idea
 *.iml
+
+# Maven
 */target/
-**/target/*
+
+# Hide Spring PKCS12 keystore password
+src/main/resources/application.properties
