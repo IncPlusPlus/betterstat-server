@@ -1,6 +1,7 @@
 package io.github.incplusplus.thermostat.nodeObjects;
 
 import com.mongodb.MongoClient;
+import io.github.incplusplus.thermostat.exceptions.NodeNotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -10,9 +11,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,15 +30,19 @@ public class NodeController
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/addNode", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public HttpStatus addNode(@RequestParam(name = "name", required = true) String name,
+	public Node addNode(@RequestParam(name = "name", required = true) String name,
 	                          @RequestParam(name = "heatingSupported", required = false, defaultValue = "false") boolean heatingSupported,
 	                          @RequestParam(name = "airConditioningSupported", required = false, defaultValue = "false") boolean airConditioningSupported,
-	                          @RequestParam(name = "fanSupported", required = false, defaultValue = "false") boolean fanSupported)
+	                          @RequestParam(name = "fanSupported", required = false, defaultValue = "false") boolean fanSupported,
+	                          HttpServletResponse response)
 	{
 		Node n = new Node(name, heatingSupported, airConditioningSupported, fanSupported);
 		mongoOps.insert(n);
 		log.info("Inserted new Node: " + n);
-		return HttpStatus.CREATED;
+//		TODO add check to see if this Node already exists and return a CONFLICT if it does
+//		TODO maybe add check to see if object made it into Mongo
+		
+		return n;
 	}
 	
 	@RequestMapping(value = "/getNodes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +50,7 @@ public class NodeController
 	public List<Node> getNodes()
 	{
 		
-		log.info("findAll entered...");
+		log.info("Listing all nodes...");
 		
 		return mongoOps.findAll(Node.class);
 	}
@@ -57,8 +64,10 @@ public class NodeController
 		
 		Query query = new Query(Criteria.where("id").is(id));
 		Node foundNode = mongoOps.findOne(query, Node.class);
-		System.out.println(foundNode);
-		return foundNode;
+//		System.out.println(foundNode);
+		if(foundNode != null)
+		{return foundNode;}
+		throw new NodeNotFoundException("Node with id '"+id+"' was not found.");
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id:[\\da-f]+}/updateStatus", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,14 +91,13 @@ public class NodeController
 			mongoOps.save(foundNode);
 			return HttpStatus.OK;
 		}
-		return HttpStatus.NOT_FOUND;
+		throw new NodeNotFoundException("Node with id '"+id+"' was not found.");
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{id:[\\da-f]+}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id:[\\da-f]+}")
 	@ResponseBody
-	public HttpStatus deleteNode(@PathVariable("id") String id)
+	public void deleteNode(@PathVariable("id") String id, HttpServletResponse response)
 	{
-		
 		log.info("updateStatus entered: id= " + id);
 		
 		Query query = new Query(Criteria.where("id").is(id));
@@ -97,8 +105,11 @@ public class NodeController
 		if (foundNode != null)
 		{
 			mongoOps.remove(foundNode);
-			return HttpStatus.OK;
+			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		}
-		return HttpStatus.NOT_FOUND;
+		else
+		{
+			throw new NodeNotFoundException("Node with id '"+id+"' was not found.");
+		}
 	}
 }
