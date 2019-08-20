@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Controller
+@RestController
 @RequestMapping("/nodes")
 public class NodeController
 {
