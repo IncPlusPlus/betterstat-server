@@ -54,9 +54,6 @@ public class SpringConfig
 		);
 	}
 	
-	@Autowired
-	private Tag[] tags;
-	
 	/**
 	 * This is to properly get around the weirdness with {@link Docket#tags(Tag, Tag...)}.
 	 * The tags method is required to have at least one tag so this method runs under the
