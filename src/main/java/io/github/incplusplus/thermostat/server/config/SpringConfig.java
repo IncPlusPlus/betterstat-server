@@ -1,39 +1,25 @@
 package io.github.incplusplus.thermostat.server.config;
 
-import com.fasterxml.classmate.TypeResolver;
 import io.github.incplusplus.thermostat.server.beans.Tags;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseMessageBuilder;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.schema.WildcardType;
-import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.github.incplusplus.thermostat.server.beans.Tags.getTags;
 import static java.util.Collections.singletonList;
-import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 @EnableSwagger2WebMvc
 //@ComponentScan("io.github.incplusplus.thermostat")
@@ -41,7 +27,7 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 public class SpringConfig
 {
 	@Bean
-	public Docket petApi() {
+	public Docket mainApi() {
 		return
 		conditionallyAddTags( new Docket(DocumentationType.SWAGGER_2)
 				.select()
@@ -63,7 +49,7 @@ public class SpringConfig
 //								.responseModel(new ModelRef("Error"))
 //								.build())
 //				)
-				.securitySchemes(singletonList(apiKey()))
+				.securitySchemes(singletonList(basicAuth()))
 				.securityContexts(singletonList(securityContext()))
 		);
 	}
@@ -93,14 +79,14 @@ public class SpringConfig
 		}
 	}
 	
-	private ApiKey apiKey() {
-		return new ApiKey("mykey", "api_key", "header");
+	private BasicAuth basicAuth() {
+		return new BasicAuth("basicAuth");
 	}
 	
 	private SecurityContext securityContext() {
 		return SecurityContext.builder()
 				.securityReferences(defaultAuth())
-				.forPaths(PathSelectors.regex("/anyPath.*"))
+				.forPaths(PathSelectors.any())
 				.build();
 	}
 	
