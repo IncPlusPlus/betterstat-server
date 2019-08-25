@@ -31,9 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.csrf().disable()
-				.authorizeRequests().anyRequest().authenticated()
-				.and().httpBasic()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.authorizeRequests()
+					.antMatchers("/v2/**","/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
+					.anyRequest().authenticated()
+				.and()
+				.httpBasic()
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
 	@Bean
