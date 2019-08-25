@@ -1,18 +1,18 @@
-package io.github.incplusplus.thermostat.models;
+package io.github.incplusplus.thermostat.persistence.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-public class ApiUser
+public class User
 {
 	@Id
 	private ObjectId _id;
 	private String username;
 	private String password;
 	
-	public ApiUser() {}
+	public User() {}
 	
-	public ApiUser(String username, String password)
+	public User(String username, String password)
 	{
 		this.username = username;
 		this.password = password;
@@ -46,5 +46,11 @@ public class ApiUser
 	public String getUsername()
 	{
 		return username;
+	}
+	
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ApiUser [username=").append(username).append(", password=").append(password).append("]");
+		return builder.toString();
 	}
 }

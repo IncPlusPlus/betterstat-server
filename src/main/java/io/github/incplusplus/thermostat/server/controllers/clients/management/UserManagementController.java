@@ -1,7 +1,9 @@
 package io.github.incplusplus.thermostat.server.controllers.clients.management;
 
-import io.github.incplusplus.thermostat.models.ApiUser;
-import io.github.incplusplus.thermostat.repositories.UsersRepository;
+import io.github.incplusplus.thermostat.persistence.models.User;
+import io.github.incplusplus.thermostat.persistence.repositories.UsersRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,8 @@ import javax.annotation.PostConstruct;
 @RequestMapping("/management")
 public class UserManagementController
 {
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private UsersRepository repository;
 	
@@ -24,7 +28,8 @@ public class UserManagementController
 	{
 		if (repository.findAll().size() < 1)
 		{
-			ApiUser defaultUser = new ApiUser("admin", passwordEncoder.encode("password123"));
+			User defaultUser = new User("admin", passwordEncoder.encode("password123"));
+			logger.info("");
 			repository.insert(defaultUser);
 		}
 	}
