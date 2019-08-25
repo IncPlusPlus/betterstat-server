@@ -1,7 +1,6 @@
 package io.github.incplusplus.thermostat.server.config;
 
 import io.github.incplusplus.thermostat.server.beans.Tags;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
