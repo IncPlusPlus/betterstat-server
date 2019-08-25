@@ -1,1 +1,2 @@
 Away from home mode: Use the weather to determine what temperature to keep the house at.
+Log usage to the database to keep track of interactions but also errors.
