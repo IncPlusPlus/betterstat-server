@@ -1,4 +1,4 @@
-package io.github.incplusplus.thermostat.server;
+package io.github.incplusplus.thermostat.models;
 
 import io.swagger.annotations.ApiModelProperty;
 

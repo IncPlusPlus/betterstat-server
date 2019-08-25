@@ -1,27 +1,18 @@
-package io.github.incplusplus.thermostat.tempRelay;
+package io.github.incplusplus.thermostat.server.controllers.thermostats;
 
 import com.mongodb.MongoClient;
-import io.github.incplusplus.thermostat.exceptions.NodeNotFoundException;
-import io.github.incplusplus.thermostat.nodeObjects.Node;
-import io.github.incplusplus.thermostat.nodeObjects.NodeController;
-import io.github.incplusplus.thermostat.nodeObjects.StatusReport;
+import io.github.incplusplus.thermostat.models.DesiredRelayState;
+import io.github.incplusplus.thermostat.server.controllers.thermostats.NodeController;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 @RequestMapping("/relay")

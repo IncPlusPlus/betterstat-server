@@ -1,7 +1,9 @@
-package io.github.incplusplus.thermostat.nodeObjects;
+package io.github.incplusplus.thermostat.server.controllers.thermostats;
 
 import com.mongodb.MongoClient;
 import io.github.incplusplus.thermostat.exceptions.NodeNotFoundException;
+import io.github.incplusplus.thermostat.models.Node;
+import io.github.incplusplus.thermostat.models.StatusReport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -11,8 +13,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +31,10 @@ public class NodeController
 	@RequestMapping(method = RequestMethod.POST, value = "/addNode", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Node addNode(@RequestParam(name = "name", required = true) String name,
-	                          @RequestParam(name = "heatingSupported", required = false, defaultValue = "false") boolean heatingSupported,
-	                          @RequestParam(name = "airConditioningSupported", required = false, defaultValue = "false") boolean airConditioningSupported,
-	                          @RequestParam(name = "fanSupported", required = false, defaultValue = "false") boolean fanSupported,
-	                          HttpServletResponse response)
+	                    @RequestParam(name = "heatingSupported", required = false, defaultValue = "false") boolean heatingSupported,
+	                    @RequestParam(name = "airConditioningSupported", required = false, defaultValue = "false") boolean airConditioningSupported,
+	                    @RequestParam(name = "fanSupported", required = false, defaultValue = "false") boolean fanSupported,
+	                    HttpServletResponse response)
 	{
 		Node n = new Node(name, heatingSupported, airConditioningSupported, fanSupported);
 		mongoOps.insert(n);

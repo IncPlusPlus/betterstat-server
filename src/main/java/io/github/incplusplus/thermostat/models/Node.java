@@ -1,7 +1,6 @@
-package io.github.incplusplus.thermostat.nodeObjects;
+package io.github.incplusplus.thermostat.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 
 public class Node
 {

@@ -1,4 +1,4 @@
-package io.github.incplusplus.thermostat.tempRelay;
+package io.github.incplusplus.thermostat.models;
 
 import org.springframework.data.annotation.Id;
 
