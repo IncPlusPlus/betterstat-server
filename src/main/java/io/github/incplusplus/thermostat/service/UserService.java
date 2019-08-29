@@ -187,7 +187,7 @@ public class UserService implements IUserService {
     @Override
     public String generateQRUrl(User user) throws UnsupportedEncodingException
     {
-        return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", APP_NAME, user.getEmail(), user.getSecret(), APP_NAME), StandardCharsets.UTF_8);
+        return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", APP_NAME, user.getEmail(), user.getSecret(), APP_NAME), StandardCharsets.UTF_8.name());
     }
 
     @Override
