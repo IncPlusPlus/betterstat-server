@@ -1,26 +1,15 @@
 package io.github.incplusplus.thermostat.test;
 
-import static io.github.incplusplus.thermostat.spring.RestUtils.o2s;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import io.github.incplusplus.thermostat.Application;
+import io.github.incplusplus.thermostat.persistence.model.User;
+import io.github.incplusplus.thermostat.persistence.repositories.UserRepository;
 import io.github.incplusplus.thermostat.spring.TestDbConfig;
+import io.github.incplusplus.thermostat.spring.TestIntegrationConfig;
 import io.github.incplusplus.thermostat.web.dto.PasswordDto;
 import io.restassured.RestAssured;
 import io.restassured.authentication.FormAuthConfig;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import io.github.incplusplus.thermostat.Application;
-import io.github.incplusplus.thermostat.persistence.repositories.UserRepository;
-import io.github.incplusplus.thermostat.persistence.model.User;
-import io.github.incplusplus.thermostat.spring.TestIntegrationConfig;
 import org.hamcrest.core.IsNot;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +20,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.junit.Assert.*;
 
 
 
@@ -98,7 +94,7 @@ public class ChangePasswordIntegrationTest {
     public void givenNotAuthenticatedUser_whenBadPasswordLoggingIn_thenCorrect() {
         final RequestSpecification request = RestAssured.given().auth().form("XXXXXXXX@XXXXXXXXX.com", "XXXXXXXX", formConfig).redirects().follow(false);
 
-        request.when().get("/console.html").then().statusCode(IsNot.not(200)).body(isEmptyOrNullString());
+        request.when().get("/console.html").then().statusCode(IsNot.not(200)).body(emptyOrNullString());
     }
 
     @Test
