@@ -3,7 +3,7 @@ package io.github.incplusplus.thermostat.captcha;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @ConfigurationProperties(prefix = "google.recaptcha.key")
 public class CaptchaSettings {
 
