@@ -14,8 +14,4 @@ import java.util.Properties;
 //@Primary
 @ComponentScan({ "io.github.incplusplus.thermostat" })
 public class TestDbConfig {
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(11);
-    }
 }
