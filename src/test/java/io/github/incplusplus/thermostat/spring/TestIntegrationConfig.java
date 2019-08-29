@@ -18,6 +18,7 @@ public class TestIntegrationConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean(SessionRegistry.class)
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
