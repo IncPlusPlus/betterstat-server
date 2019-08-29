@@ -1,20 +1,90 @@
 package io.github.incplusplus.thermostat.test;
 
 import static org.junit.Assert.assertEquals;
+
+import io.github.incplusplus.thermostat.Application;
+import io.github.incplusplus.thermostat.persistence.model.User;
+import io.github.incplusplus.thermostat.persistence.repositories.UserRepository;
+import io.github.incplusplus.thermostat.spring.TestDbConfig;
+import io.github.incplusplus.thermostat.spring.TestIntegrationConfig;
+import io.github.incplusplus.thermostat.web.dto.UserDto;
 import io.restassured.RestAssured;
+import io.restassured.authentication.FormAuthConfig;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import io.restassured.specification.RequestSpecification;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.servlet.ServletContext;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { Application.class,
+        TestDbConfig.class,
+        TestIntegrationConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RegistrationPasswordLiveTest {
-    private final String BASE_URI = "http://localhost:8081/";
-
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    @Value("${local.server.port}")
+    int port;
+    
+    @Value("${server.ssl.key-store-password}")
+    String p12Password;
+    
+    @Value("${server.ssl.key-store}")
+    String keyStorePath;
+    
+    @Value("${server.ssl.enabled}")
+    boolean sslEnabled;
+    
+    private FormAuthConfig formConfig;
+    
+    
+    private String URL;
+    
+    @Before
+    public void init() {
+        User user = userRepository.findByEmail("test@test.com");
+        if (user == null) {
+            user = new User();
+            user.setFirstName("Test");
+            user.setLastName("Test");
+            user.setPassword(passwordEncoder.encode("test"));
+            user.setEmail("test@test.com");
+            user.setEnabled(true);
+            userRepository.save(user);
+        } else {
+            user.setPassword(passwordEncoder.encode("test"));
+            userRepository.save(user);
+        }
+    
+        RestAssured.port = port;
+        RestAssured.baseURI = (sslEnabled ? "https":"http") + "://localhost";
+        RestAssured.useRelaxedHTTPSValidation();
+//        RestAssured.config().getSSLConfig().with().keyStore(keyStorePath, p12Password);
+        URL = "/user/registration";
+        formConfig = new FormAuthConfig("/login", "username", "password");
+    }
+    
+    @Ignore("We only want to run this locally and not on CI. We don't want to have to add mail credentials to application.properties")
     @Test
     public void givenInvalidPassword_thenBadRequest() {
         // too short
@@ -43,15 +113,20 @@ public class RegistrationPasswordLiveTest {
     }
 
     private int getResponseForPassword(String pass) {
-        final Map<String, String> param = new HashMap<String, String>();
+        UserDto userDto = new UserDto();
         final String randomName = UUID.randomUUID().toString();
-        param.put("firstName", randomName);
-        param.put("lastName", "Doe");
-        param.put("email", randomName + "@x.com");
-        param.put("password", pass);
-        param.put("matchingPassword", pass);
+        userDto.setFirstName(randomName);
+        userDto.setLastName("Doe");
+        userDto.setEmail(randomName+"@x.com");
+        userDto.setPassword(pass);
+        userDto.setMatchingPassword(pass);
+    
+        final RequestSpecification request = RestAssured.given().auth().form("test@test.com", "test", formConfig);
+        final Response response = request.with()
+                .header("Content-Type","application/json" )
+                .header("Accept","application/json" ).body(userDto).post(URL);
 
-        final Response response = RestAssured.given().formParams(param).accept(MediaType.APPLICATION_JSON_VALUE).post(BASE_URI + "user/registration");
+//        final Response response = RestAssured.given().body(userDto).accept(MediaType.APPLICATION_JSON_VALUE).post(URL);
         return response.getStatusCode();
     }
 }

@@ -31,6 +31,7 @@ import io.github.incplusplus.thermostat.web.dto.UserDto;
 import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,7 @@ public class UserServiceIntegrationTest {
         assertNotNull(user.getId());
     }
 
+    @Ignore
     @Test
     public void givenDetachedUser_whenAccessingEntityAssociations_thenCorrect() throws EmailExistsException {
         final User user = registerUser();

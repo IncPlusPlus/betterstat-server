@@ -9,6 +9,7 @@ import io.restassured.specification.RequestSpecification;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import io.github.incplusplus.thermostat.Application;
 import io.github.incplusplus.thermostat.persistence.repositories.UserRepository;
@@ -24,6 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.servlet.ServletContext;
 
 
 @RunWith(SpringRunner.class)
@@ -46,6 +49,9 @@ public class GetLoggedUsersIntegrationTest {
     
     @Value("${server.ssl.key-store}")
     String keyStorePath;
+    
+    @Value("${server.ssl.enabled}")
+    boolean sslEnabled;
 
     private FormAuthConfig formConfig;
     private String LOGGED_USERS_URL, SESSION_REGISTRY_LOGGED_USERS_URL;
@@ -69,7 +75,7 @@ public class GetLoggedUsersIntegrationTest {
         }
 
         RestAssured.port = port;
-        RestAssured.baseURI = "https://localhost";
+        RestAssured.baseURI = (sslEnabled ? "https":"http") + "://localhost";
         RestAssured.useRelaxedHTTPSValidation();
 //        RestAssured.config().getSSLConfig().with().keyStore(keyStorePath, p12Password);
         LOGGED_USERS_URL = "/loggedUsers";

@@ -54,6 +54,9 @@ public class ChangePasswordIntegrationTest {
     
     @Value("${server.ssl.key-store}")
     String keyStorePath;
+    
+    @Value("${server.ssl.enabled}")
+    boolean sslEnabled;
 
     private FormAuthConfig formConfig;
     private String URL;
@@ -77,7 +80,7 @@ public class ChangePasswordIntegrationTest {
         }
 
         RestAssured.port = port;
-        RestAssured.baseURI = "https://localhost";
+        RestAssured.baseURI = (sslEnabled ? "https":"http") + "://localhost";
         RestAssured.useRelaxedHTTPSValidation();
 //        RestAssured.config().getSSLConfig().with().keyStore(keyStorePath, p12Password);
         URL = "/user/updatePassword";
