@@ -50,7 +50,8 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         }
         clearAuthenticationAttributes(request);
 
-        loginNotification(authentication, request);
+        //TODO disabled for now because this starts going nuts when requests come from 127.0.0.1
+//        loginNotification(authentication, request);
     }
 
     private void loginNotification(Authentication authentication, HttpServletRequest request) {
