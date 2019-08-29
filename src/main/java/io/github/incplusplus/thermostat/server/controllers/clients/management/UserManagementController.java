@@ -1,7 +1,10 @@
 package io.github.incplusplus.thermostat.server.controllers.clients.management;
 
-import io.github.incplusplus.thermostat.persistence.models.User;
-import io.github.incplusplus.thermostat.persistence.repositories.UsersRepository;
+import io.github.incplusplus.thermostat.persistence.model.User;
+import io.github.incplusplus.thermostat.persistence.repositories.UserRepository;
+import io.github.incplusplus.thermostat.service.IUserService;
+import io.github.incplusplus.thermostat.service.UserService;
+import io.github.incplusplus.thermostat.web.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,10 @@ public class UserManagementController
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private UsersRepository repository;
+	private IUserService userService;
+	
+	@Autowired
+	private UserRepository repository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -26,11 +32,16 @@ public class UserManagementController
 	@PostConstruct
 	private void init()
 	{
-		if (repository.findAll().size() < 1)
-		{
-			User defaultUser = new User("admin", passwordEncoder.encode("password123"));
-			logger.info("");
-			repository.insert(defaultUser);
-		}
+//		if (repository.findAll().size() < 1)
+//		{
+//			UserDto userDto = new UserDto();
+//			userDto.setEmail("noreply@dummydomainthatdoesnotexist.nowhere");
+//			userDto.setPassword("password123");
+//			userDto.setMatchingPassword("password123");
+////			User defaultUser = userService.registerNewUserAccount(userDto);
+////			User defaultUser = new User("admin", passwordEncoder.encode("password123"));
+////			logger.warn("There was no existing accounts so I added one myself. Info below:\n" + defaultUser);
+////			repository.insert(defaultUser);
+//		}
 	}
 }

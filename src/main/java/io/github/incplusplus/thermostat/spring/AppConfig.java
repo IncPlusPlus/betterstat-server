@@ -1,0 +1,16 @@
+package io.github.incplusplus.thermostat.spring;
+
+import io.github.incplusplus.thermostat.security.ActiveUserStore;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+    // beans
+
+    @Bean
+    public ActiveUserStore activeUserStore() {
+        return new ActiveUserStore();
+    }
+
+}
