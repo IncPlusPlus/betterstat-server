@@ -6,5 +6,5 @@
 **/target/
 
 # Hide Spring PKCS12 keystore password
-src/main/resources/application.properties
 src/main/resources/*.p12
+src/main/resources/application-dev.properties
