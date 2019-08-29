@@ -2,7 +2,7 @@ package io.github.incplusplus.thermostat.test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -114,9 +114,9 @@ public class RegistrationControllerIntegrationTest {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson=ow.writeValueAsString(anObject );
 
-        ResultActions resultActions = this.mockMvc.perform(post("/user/registration").content(requestJson).contentType(APPLICATION_JSON_UTF8));
+        ResultActions resultActions = this.mockMvc.perform(post("/user/registration").content(requestJson).contentType(APPLICATION_JSON));
         resultActions.andExpect(status().is(400));
-        resultActions.andExpect(content().contentType(APPLICATION_JSON_UTF8)).andExpect(jsonPath("$.error", is("InvaliduserDto")))
+        resultActions.andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$.error", is("InvaliduserDto")))
                 .andExpect(jsonPath("$.message", containsString("{\"field\":\"lastName\",\"defaultMessage\":\"Length must be greater than 1\"}")));
     }
 }
