@@ -5,6 +5,7 @@ import io.github.incplusplus.thermostat.security.CustomRememberMeServices;
 import io.github.incplusplus.thermostat.security.google2fa.CustomAuthenticationProvider;
 import io.github.incplusplus.thermostat.security.google2fa.CustomWebAuthenticationDetailsSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -130,6 +131,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter
         return new BCryptPasswordEncoder(11);
     }
 
+    @ConditionalOnMissingBean(SessionRegistry.class)
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
