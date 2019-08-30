@@ -88,6 +88,12 @@
             <properties>
                 <activatedProperties>ci</activatedProperties>
             </properties>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>test</value>
+                </property>
+            </activation>
         </profile>
     </profiles>
 
