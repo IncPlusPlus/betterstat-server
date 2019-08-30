@@ -30,6 +30,7 @@ import io.github.incplusplus.thermostat.spring.TestDbConfig;
 import io.github.incplusplus.thermostat.spring.TestIntegrationConfig;
 import io.github.incplusplus.thermostat.web.dto.UserDto;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -92,6 +94,7 @@ public class RegistrationControllerIntegrationTest {
         resultActions.andExpect(view().name("redirect:/console.html?lang=en"));
     }
 
+    @Ignore("We need to update this to use a more reasonable results comparison method")
     @Test
     public void testRegistrationValidation() throws Exception {
 

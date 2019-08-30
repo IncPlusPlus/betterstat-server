@@ -12,6 +12,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.hamcrest.core.IsNot;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,7 @@ public class ChangePasswordIntegrationTest {
         formConfig = new FormAuthConfig("/login", "username", "password");
     }
 
+    @Ignore("We're stripping out most of the web content anyways")
     @Test
     public void givenNotAuthenticatedUser_whenLoggingIn_thenCorrect() {
         final RequestSpecification request = RestAssured.given().auth().form("test@test.com", "test", formConfig);
