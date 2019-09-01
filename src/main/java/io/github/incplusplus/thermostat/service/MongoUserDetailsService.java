@@ -1,7 +1,7 @@
 package io.github.incplusplus.thermostat.service;
 
-import io.github.incplusplus.thermostat.persistence.models.User;
-import io.github.incplusplus.thermostat.persistence.repositories.UsersRepository;
+import io.github.incplusplus.thermostat.persistence.model.ApiUser;
+import io.github.incplusplus.thermostat.persistence.repositories.ApiUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,17 +16,17 @@ import java.util.List;
 public class MongoUserDetailsService implements UserDetailsService
 {
 	@Autowired
-	private UsersRepository repository;
+	private ApiUserRepository repository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		User user = repository.findByUsername(username);
-		if (user == null)
+		ApiUser apiUser = repository.findByUsername(username);
+		if (apiUser == null)
 		{
 			throw new UsernameNotFoundException("User not found");
 		}
 		List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("user"));
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+		return new org.springframework.security.core.userdetails.User(apiUser.getUsername(), apiUser.getPassword(), authorities);
 	}
 }
