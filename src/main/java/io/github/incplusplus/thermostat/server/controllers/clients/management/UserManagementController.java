@@ -1,10 +1,7 @@
 package io.github.incplusplus.thermostat.server.controllers.clients.management;
 
-import io.github.incplusplus.thermostat.persistence.model.User;
-import io.github.incplusplus.thermostat.persistence.repositories.UserRepository;
-import io.github.incplusplus.thermostat.service.IUserService;
-import io.github.incplusplus.thermostat.service.UserService;
-import io.github.incplusplus.thermostat.web.dto.UserDto;
+import io.github.incplusplus.thermostat.persistence.models.User;
+import io.github.incplusplus.thermostat.persistence.repositories.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +18,7 @@ public class UserManagementController
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private IUserService userService;
-	
-	@Autowired
-	private UserRepository repository;
+	private UsersRepository repository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
