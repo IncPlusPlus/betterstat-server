@@ -2,6 +2,9 @@ package io.github.incplusplus.thermostat.service;
 
 import io.github.incplusplus.thermostat.persistence.model.Client;
 import io.github.incplusplus.thermostat.persistence.repositories.ClientRepository;
+import io.github.incplusplus.thermostat.persistence.repositories.PasswordResetTokenRepository;
+import io.github.incplusplus.thermostat.persistence.repositories.RoleRepository;
+import io.github.incplusplus.thermostat.persistence.repositories.VerificationTokenRepository;
 import io.github.incplusplus.thermostat.web.dto.UserDto;
 import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
