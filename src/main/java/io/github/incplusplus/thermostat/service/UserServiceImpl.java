@@ -2,6 +2,8 @@ package io.github.incplusplus.thermostat.service;
 
 import io.github.incplusplus.thermostat.persistence.model.Client;
 import io.github.incplusplus.thermostat.persistence.repositories.ClientRepository;
+import io.github.incplusplus.thermostat.web.dto.UserDto;
+import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserServiceImpl
+public class UserServiceImpl implements UserService
 {
 	
 	@Autowired

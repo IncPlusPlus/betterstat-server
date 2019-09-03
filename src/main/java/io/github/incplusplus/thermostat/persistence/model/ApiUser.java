@@ -7,23 +7,19 @@ import org.springframework.data.annotation.Id;
 
 /**
  * This class represents an ApiUser. This will likely be representative of
- * the users created for
+ * the users created for usage by the thermostats.
  */
 public class ApiUser extends User
 {
-	
-	public ApiUser() {}
-	
 	public ApiUser(String username, String password)
 	{
-		this.username = username;
-		this.password = password;
+		super(username,password);
 	}
 	
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("ApiUser [username=").append(username)
-				.append(", password=").append(password)
+		builder.append("ApiUser [username=").append(getUsername())
+				.append(", password=").append(getPassword())
 				.append("]");
 		return builder.toString();
 	}

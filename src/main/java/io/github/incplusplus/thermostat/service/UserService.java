@@ -1,6 +1,8 @@
 package io.github.incplusplus.thermostat.service;
 
 import io.github.incplusplus.thermostat.persistence.model.Client;
+import io.github.incplusplus.thermostat.web.dto.UserDto;
+import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
 
 import java.io.UnsupportedEncodingException;
