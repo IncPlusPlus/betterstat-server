@@ -22,7 +22,7 @@ public interface ClientService
 	
 	void deleteUser(Client client);
 	
-	void createVerificationTokenForUser(Client client, String token);
+	void createVerificationTokenForClient(Client client, String token);
 	
 	VerificationToken getVerificationToken(String VerificationToken);
 	

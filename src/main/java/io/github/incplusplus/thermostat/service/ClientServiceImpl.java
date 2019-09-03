@@ -116,7 +116,7 @@ public class ClientServiceImpl implements ClientService
 	}
 	
 	@Override
-	public void createVerificationTokenForUser(final Client client, final String token)
+	public void createVerificationTokenForClient(final Client client, final String token)
 	{
 		final VerificationToken myToken = new VerificationToken(token, client);
 		tokenRepository.save(myToken);
