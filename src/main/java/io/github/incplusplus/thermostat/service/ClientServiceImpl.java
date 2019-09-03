@@ -12,9 +12,6 @@ import io.github.incplusplus.thermostat.web.dto.ClientDto;
 import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService
+public class ClientServiceImpl implements ClientService
 {
 	@Autowired
 	private ClientRepository clientRepository;

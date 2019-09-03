@@ -12,9 +12,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService
+public interface ClientService
 {
-	
 	Client registerNewUserAccount(ClientDto accountDto) throws UserAlreadyExistException;
 	
 	User getUser(String verificationToken);
