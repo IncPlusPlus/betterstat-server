@@ -1,11 +1,14 @@
 package io.github.incplusplus.thermostat.service;
 
 import io.github.incplusplus.thermostat.persistence.model.Client;
+import io.github.incplusplus.thermostat.persistence.model.PasswordResetToken;
+import io.github.incplusplus.thermostat.persistence.model.User;
+import io.github.incplusplus.thermostat.persistence.model.VerificationToken;
 import io.github.incplusplus.thermostat.persistence.repositories.ClientRepository;
 import io.github.incplusplus.thermostat.persistence.repositories.PasswordResetTokenRepository;
 import io.github.incplusplus.thermostat.persistence.repositories.RoleRepository;
 import io.github.incplusplus.thermostat.persistence.repositories.VerificationTokenRepository;
-import io.github.incplusplus.thermostat.web.dto.UserDto;
+import io.github.incplusplus.thermostat.web.dto.ClientDto;
 import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService
 {
-	
 	@Autowired
 	private ClientRepository clientRepository;
 	
@@ -56,8 +58,10 @@ public class UserServiceImpl implements UserService
 	// API
 	
 	@Override
-	public Client registerNewUserAccount(final UserDto accountDto) {
-		if (emailExists(accountDto.getEmail())) {
+	public Client registerNewUserAccount(final ClientDto accountDto)
+	{
+		if (emailExists(accountDto.getEmail()))
+		{
 			throw new UserAlreadyExistException("There is an account with that email adress: " + accountDto.getEmail());
 		}
 		final Client client = new Client();
@@ -66,41 +70,48 @@ public class UserServiceImpl implements UserService
 		client.setLastName(accountDto.getLastName());
 		client.setPassword(passwordEncoder.encode(accountDto.getPassword()));
 		client.setEmail(accountDto.getEmail());
-		client.setUsing2FA(accountDto.isUsing2FA());
+//		client.setUsing2FA(accountDto.isUsing2FA());
 		client.setRoles(Arrays.asList(roleRepository.findRoleByName("ROLE_USER")));
 		return clientRepository.save(client);
 	}
 	
 	@Override
-	public Client getUser(final String verificationToken) {
+	public User getUser(final String verificationToken)
+	{
 		final VerificationToken token = tokenRepository.findByToken(verificationToken);
-		if (token != null) {
-			return token.getUser();
+		if (token != null)
+		{
+			return token.getClient();
 		}
 		return null;
 	}
 	
 	@Override
-	public VerificationToken getVerificationToken(final String VerificationToken) {
+	public VerificationToken getVerificationToken(final String VerificationToken)
+	{
 		return tokenRepository.findByToken(VerificationToken);
 	}
 	
 	@Override
-	public void saveRegisteredUser(final Client client) {
+	public void saveRegisteredUser(final Client client)
+	{
 		clientRepository.save(client);
 	}
 	
 	@Override
-	public void deleteUser(final Client client) {
+	public void deleteUser(final Client client)
+	{
 		final VerificationToken verificationToken = tokenRepository.findByUser(client);
 		
-		if (verificationToken != null) {
+		if (verificationToken != null)
+		{
 			tokenRepository.delete(verificationToken);
 		}
 		
 		final PasswordResetToken passwordToken = passwordTokenRepository.findByUser(client);
 		
-		if (passwordToken != null) {
+		if (passwordToken != null)
+		{
 			passwordTokenRepository.delete(passwordToken);
 		}
 		
@@ -108,13 +119,15 @@ public class UserServiceImpl implements UserService
 	}
 	
 	@Override
-	public void createVerificationTokenForUser(final Client client, final String token) {
+	public void createVerificationTokenForUser(final Client client, final String token)
+	{
 		final VerificationToken myToken = new VerificationToken(token, client);
 		tokenRepository.save(myToken);
 	}
 	
 	@Override
-	public VerificationToken generateNewVerificationToken(final String existingVerificationToken) {
+	public VerificationToken generateNewVerificationToken(final String existingVerificationToken)
+	{
 		VerificationToken vToken = tokenRepository.findByToken(existingVerificationToken);
 		vToken.updateToken(UUID.randomUUID()
 				.toString());
@@ -123,56 +136,66 @@ public class UserServiceImpl implements UserService
 	}
 	
 	@Override
-	public void createPasswordResetTokenForUser(final Client client, final String token) {
+	public void createPasswordResetTokenForUser(final Client client, final String token)
+	{
 		final PasswordResetToken myToken = new PasswordResetToken(token, client);
 		passwordTokenRepository.save(myToken);
 	}
 	
 	@Override
-	public Client findUserByEmail(final String email) {
+	public Client findUserByEmail(final String email)
+	{
 		return clientRepository.findByEmail(email);
 	}
 	
 	@Override
-	public PasswordResetToken getPasswordResetToken(final String token) {
+	public PasswordResetToken getPasswordResetToken(final String token)
+	{
 		return passwordTokenRepository.findByToken(token);
 	}
 	
 	@Override
-	public Client getUserByPasswordResetToken(final String token) {
+	public User getUserByPasswordResetToken(final String token)
+	{
 		return passwordTokenRepository.findByToken(token)
-				.getUser();
+				.getClient();
 	}
 	
 	@Override
-	public Optional<Client> getUserByID(final ObjectId id) {
+	public Optional<Client> getUserByID(final ObjectId id)
+	{
 		return clientRepository.findById(id);
 	}
 	
 	@Override
-	public void changeUserPassword(final Client client, final String password) {
+	public void changeUserPassword(final Client client, final String password)
+	{
 		client.setPassword(passwordEncoder.encode(password));
 		clientRepository.save(client);
 	}
 	
 	@Override
-	public boolean checkIfValidOldPassword(final Client client, final String oldPassword) {
+	public boolean checkIfValidOldPassword(final Client client, final String oldPassword)
+	{
 		return passwordEncoder.matches(oldPassword, client.getPassword());
 	}
 	
 	@Override
-	public String validateVerificationToken(String token) {
+	public String validateVerificationToken(String token)
+	{
 		final VerificationToken verificationToken = tokenRepository.findByToken(token);
-		if (verificationToken == null) {
+		if (verificationToken == null)
+		{
 			return TOKEN_INVALID;
 		}
 		
-		final Client client = verificationToken.getUser();
+		final Client client = verificationToken.getClient();
 		final Calendar cal = Calendar.getInstance();
 		if ((verificationToken.getExpiryDate()
 				.getTime()
 				- cal.getTime()
-				.getTime()) <= 0) {
+				.getTime()) <= 0)
+		{
 			tokenRepository.delete(verificationToken);
 			return TOKEN_EXPIRED;
 		}
@@ -188,39 +211,42 @@ public class UserServiceImpl implements UserService
 	{
 		return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", APP_NAME, client.getEmail(), client.getSecret(), APP_NAME), StandardCharsets.UTF_8.name());
 	}
+
+//	@Override
+//	public Client updateUser2FA(boolean use2FA) {
+//		final Authentication curAuth = SecurityContextHolder.getContext()
+//				.getAuthentication();
+//		Client currentClient = (Client) curAuth.getPrincipal();
+//		currentClient.setUsing2FA(use2FA);
+//		currentClient = clientRepository.save(currentClient);
+//		final Authentication auth = new UsernamePasswordAuthenticationToken(currentClient, currentClient.getPassword(), curAuth.getAuthorities());
+//		SecurityContextHolder.getContext()
+//				.setAuthentication(auth);
+//		return currentClient;
+//	}
 	
-	@Override
-	public Client updateUser2FA(boolean use2FA) {
-		final Authentication curAuth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		Client currentClient = (Client) curAuth.getPrincipal();
-		currentClient.setUsing2FA(use2FA);
-		currentClient = clientRepository.save(currentClient);
-		final Authentication auth = new UsernamePasswordAuthenticationToken(currentClient, currentClient.getPassword(), curAuth.getAuthorities());
-		SecurityContextHolder.getContext()
-				.setAuthentication(auth);
-		return currentClient;
-	}
-	
-	private boolean emailExists(final String email) {
+	private boolean emailExists(final String email)
+	{
 		return clientRepository.findByEmail(email) != null;
 	}
 	
 	@Override
-	public List<String> getUsersFromSessionRegistry() {
+	public List<String> getUsersFromSessionRegistry()
+	{
 		return sessionRegistry.getAllPrincipals()
 				.stream()
 				.filter((u) -> !sessionRegistry.getAllSessions(u, false)
 						.isEmpty())
 				.map(o -> {
-					if (o instanceof Client) {
+					if (o instanceof Client)
+					{
 						return ((Client) o).getEmail();
-					} else {
+					}
+					else
+					{
 						return o.toString();
 					}
 				})
 				.collect(Collectors.toList());
-		
 	}
-	
 }

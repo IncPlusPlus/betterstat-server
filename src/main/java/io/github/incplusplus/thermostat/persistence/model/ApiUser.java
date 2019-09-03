@@ -11,12 +11,13 @@ import org.springframework.data.annotation.Id;
  */
 public class ApiUser extends User
 {
-	public ApiUser(String username, String password)
+	public ApiUser()
 	{
-		super(username,password);
+	
 	}
 	
-	public String toString() {
+	public String toString()
+	{
 		final StringBuilder builder = new StringBuilder();
 		builder.append("ApiUser [username=").append(getUsername())
 				.append(", password=").append(getPassword())

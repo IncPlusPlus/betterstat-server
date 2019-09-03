@@ -15,7 +15,7 @@ public class VerificationToken {
 
     private String token;
 
-    private User user;
+    private Client client;
 
     private Date expiryDate;
 
@@ -30,11 +30,11 @@ public class VerificationToken {
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
-    public VerificationToken(final String token, final User user) {
+    public VerificationToken(final String token, final Client client) {
         super();
 
         this.token = token;
-        this.user = user;
+        this.client = client;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
@@ -50,12 +50,12 @@ public class VerificationToken {
         this.token = token;
     }
 
-    public User getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(final User user) {
-        this.user = user;
+    public void setClient(final Client client) {
+        this.client = client;
     }
 
     public Date getExpiryDate() {
@@ -86,7 +86,7 @@ public class VerificationToken {
         int result = 1;
         result = prime * result + ((expiryDate == null) ? 0 : expiryDate.hashCode());
         result = prime * result + ((token == null) ? 0 : token.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        result = prime * result + ((client == null) ? 0 : client.hashCode());
         return result;
     }
 
@@ -116,9 +116,9 @@ public class VerificationToken {
         } else if (!token.equals(other.token)) {
             return false;
         }
-        if (user == null) {
-	        return other.user == null;
-        } else return user.equals(other.user);
+        if (client == null) {
+	        return other.client == null;
+        } else return client.equals(other.client);
     }
 
     @Override

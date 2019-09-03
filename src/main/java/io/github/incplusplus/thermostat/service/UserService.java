@@ -2,8 +2,9 @@ package io.github.incplusplus.thermostat.service;
 
 import io.github.incplusplus.thermostat.persistence.model.Client;
 import io.github.incplusplus.thermostat.persistence.model.PasswordResetToken;
+import io.github.incplusplus.thermostat.persistence.model.User;
 import io.github.incplusplus.thermostat.persistence.model.VerificationToken;
-import io.github.incplusplus.thermostat.web.dto.UserDto;
+import io.github.incplusplus.thermostat.web.dto.ClientDto;
 import io.github.incplusplus.thermostat.web.error.UserAlreadyExistException;
 import org.bson.types.ObjectId;
 
@@ -14,9 +15,9 @@ import java.util.Optional;
 public interface UserService
 {
 	
-	Client registerNewUserAccount(UserDto accountDto) throws UserAlreadyExistException;
+	Client registerNewUserAccount(ClientDto accountDto) throws UserAlreadyExistException;
 	
-	Client getUser(String verificationToken);
+	User getUser(String verificationToken);
 	
 	void saveRegisteredUser(Client client);
 	
@@ -34,7 +35,7 @@ public interface UserService
 	
 	PasswordResetToken getPasswordResetToken(String token);
 	
-	Client getUserByPasswordResetToken(String token);
+	User getUserByPasswordResetToken(String token);
 	
 	Optional<Client> getUserByID(ObjectId id);
 	
@@ -46,7 +47,7 @@ public interface UserService
 	
 	String generateQRUrl(Client client) throws UnsupportedEncodingException;
 	
-	Client updateUser2FA(boolean use2FA);
+//	Client updateUser2FA(boolean use2FA);
 	
 	List<String> getUsersFromSessionRegistry();
 	

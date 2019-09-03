@@ -13,10 +13,8 @@ public abstract class User
 	private String password;
 	private Collection<Role> roles;
 	
-	public User(String username, String password)
+	public User()
 	{
-		this.username = username;
-		this.password = password;
 	}
 	
 	public ObjectId get_id()
@@ -59,7 +57,8 @@ public abstract class User
 		this.roles = roles;
 	}
 	
-	public String toString() {
+	public String toString()
+	{
 		final StringBuilder builder = new StringBuilder();
 		builder.append("User [username=").append(username).append(", password=").append(password).append("]");
 		return builder.toString();

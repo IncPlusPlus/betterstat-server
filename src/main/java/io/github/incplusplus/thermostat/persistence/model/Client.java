@@ -30,7 +30,6 @@ public class Client extends User
 	
 	public Client()
 	{
-		super();
 		this.secret = Base32.random();
 		this.enabled = false;
 	}
@@ -137,7 +136,7 @@ public class Client extends User
 	public String toString()
 	{
 		final StringBuilder builder = new StringBuilder();
-		builder.append("User [id=").append(getId())
+		builder.append("User [id=").append(get_id())
 				.append(", firstName=").append(firstName)
 				.append(", lastName=").append(lastName)
 				.append(", email=").append(email)

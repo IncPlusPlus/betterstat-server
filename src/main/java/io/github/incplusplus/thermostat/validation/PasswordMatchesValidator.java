@@ -1,6 +1,6 @@
 package io.github.incplusplus.thermostat.validation;
 
-import io.github.incplusplus.thermostat.web.dto.UserDto;
+import io.github.incplusplus.thermostat.web.dto.ClientDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -14,7 +14,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(final Object obj, final ConstraintValidatorContext context) {
-        final UserDto user = (UserDto) obj;
+        final ClientDto user = (ClientDto) obj;
         return user.getPassword().equals(user.getMatchingPassword());
     }
 
