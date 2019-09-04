@@ -1,5 +1,6 @@
 package io.github.incplusplus.thermostat.server.config;
 
+import io.github.incplusplus.thermostat.security.ActiveUserStore;
 import io.github.incplusplus.thermostat.service.MongoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -46,6 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	@Bean
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
+	}
+	
+	@Bean
+	public ActiveUserStore activeUserStore() {
+		return new ActiveUserStore();
 	}
 	
 	@Override
