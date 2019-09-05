@@ -16,7 +16,7 @@ public interface ClientService
 {
 	Client registerNewUserAccount(ClientDto accountDto) throws UserAlreadyExistException;
 	
-	User getUser(String verificationToken);
+	Client getClient(String verificationToken);
 	
 	void saveRegisteredUser(Client client);
 	

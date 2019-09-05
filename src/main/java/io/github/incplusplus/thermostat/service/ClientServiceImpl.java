@@ -73,7 +73,7 @@ public class ClientServiceImpl implements ClientService
 	}
 	
 	@Override
-	public User getUser(final String verificationToken)
+	public Client getClient(final String verificationToken)
 	{
 		final VerificationToken token = tokenRepository.findByToken(verificationToken);
 		if (token != null)

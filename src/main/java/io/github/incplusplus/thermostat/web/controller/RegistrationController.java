@@ -1,12 +1,15 @@
 package io.github.incplusplus.thermostat.web.controller;
 
+import io.github.incplusplus.thermostat.persistence.model.Client;
 import io.github.incplusplus.thermostat.persistence.model.Privilege;
 import io.github.incplusplus.thermostat.persistence.model.VerificationToken;
 import io.github.incplusplus.thermostat.registration.OnRegistrationCompleteEvent;
 import io.github.incplusplus.thermostat.security.SecurityClientService;
 import io.github.incplusplus.thermostat.service.ClientService;
+import io.github.incplusplus.thermostat.web.dto.ClientDto;
 import io.github.incplusplus.thermostat.web.dto.PasswordDto;
 import io.github.incplusplus.thermostat.web.error.InvalidOldPasswordException;
+import io.github.incplusplus.thermostat.web.util.GenericResponse;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+//@EnableAutoConfiguration
 @Controller
 public class RegistrationController {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -70,10 +74,10 @@ public class RegistrationController {
 	
 	@PostMapping(value = "/user/registration")
 	@ResponseBody
-	public GenericResponse registerUserAccount(@RequestBody @Valid final UserDto accountDto, final HttpServletRequest request) {
+	public GenericResponse registerUserAccount(@RequestBody @Valid final ClientDto accountDto, final HttpServletRequest request) {
 		LOGGER.debug("Registering user account with information: {}", accountDto);
 		
-		final User registered = clientService.registerNewUserAccount(accountDto);
+		final Client registered = clientService.registerNewUserAccount(accountDto);
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
 		return new GenericResponse("success");
 	}
@@ -84,12 +88,12 @@ public class RegistrationController {
 		Locale locale = request.getLocale();
 		final String result = clientService.validateVerificationToken(token);
 		if (result.equals("valid")) {
-			final User user = clientService.getUser(token);
-			// if (user.isUsing2FA()) {
-			// model.addAttribute("qr", userService.generateQRUrl(user));
+			final Client client = clientService.getClient(token);
+			// if (client.isUsing2FA()) {
+			// model.addAttribute("qr", userService.generateQRUrl(client));
 			// return "redirect:/qrcode.html?lang=" + locale.getLanguage();
 			// }
-			authWithoutPassword(user);
+			authWithoutPassword(client);
 			model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
 			return "redirect:/console.html?lang=" + locale.getLanguage();
 		}
@@ -106,8 +110,8 @@ public class RegistrationController {
 	@ResponseBody
 	public GenericResponse resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
 		final VerificationToken newToken = clientService.generateNewVerificationToken(existingToken);
-		final User user = clientService.getUser(newToken.getToken());
-		mailSender.send(constructResendVerificationTokenEmail(getAppUrl(request), request.getLocale(), newToken, user));
+		final Client client = clientService.getClient(newToken.getToken());
+		mailSender.send(constructResendVerificationTokenEmail(getAppUrl(request), request.getLocale(), newToken, client));
 		return new GenericResponse(messages.getMessage("message.resendToken", null, request.getLocale()));
 	}
 	
@@ -115,11 +119,11 @@ public class RegistrationController {
 	@RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
 	@ResponseBody
 	public GenericResponse resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
-		final User user = clientService.findUserByEmail(userEmail);
-		if (user != null) {
+		final Client client = clientService.findUserByEmail(userEmail);
+		if (client != null) {
 			final String token = UUID.randomUUID().toString();
-			clientService.createPasswordResetTokenForUser(user, token);
-			mailSender.send(constructResetTokenEmail(getAppUrl(request), request.getLocale(), token, user));
+			clientService.createPasswordResetTokenForUser(client, token);
+			mailSender.send(constructResetTokenEmail(getAppUrl(request), request.getLocale(), token, client));
 		}
 		return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
 	}
@@ -137,8 +141,8 @@ public class RegistrationController {
 	@RequestMapping(value = "/user/savePassword", method = RequestMethod.POST)
 	@ResponseBody
 	public GenericResponse savePassword(final Locale locale, @Valid PasswordDto passwordDto) {
-		final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		clientService.changeUserPassword(user, passwordDto.getNewPassword());
+		final Client client = (Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		clientService.changeUserPassword(client, passwordDto.getNewPassword());
 		return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
 	}
 	
@@ -146,44 +150,44 @@ public class RegistrationController {
 	@RequestMapping(value = "/user/updatePassword", method = RequestMethod.POST)
 	@ResponseBody
 	public GenericResponse changeUserPassword(final Locale locale, @RequestBody @Valid PasswordDto passwordDto) {
-		final User user = clientService.findUserByEmail(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail());
-		if (!clientService.checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
+		final Client client = clientService.findUserByEmail(((Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail());
+		if (!clientService.checkIfValidOldPassword(client, passwordDto.getOldPassword())) {
 			throw new InvalidOldPasswordException();
 		}
-		clientService.changeUserPassword(user, passwordDto.getNewPassword());
+		clientService.changeUserPassword(client, passwordDto.getNewPassword());
 		return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
 	}
 	
-	@RequestMapping(value = "/user/update/2fa", method = RequestMethod.POST)
-	@ResponseBody
-	public GenericResponse modifyUser2FA(@RequestParam("use2FA") final boolean use2FA) throws UnsupportedEncodingException
-	{
-		final User user = clientService.updateUser2FA(use2FA);
-		if (use2FA) {
-			return new GenericResponse(clientService.generateQRUrl(user));
-		}
-		return null;
-	}
+//	@RequestMapping(value = "/user/update/2fa", method = RequestMethod.POST)
+//	@ResponseBody
+//	public GenericResponse modifyUser2FA(@RequestParam("use2FA") final boolean use2FA) throws UnsupportedEncodingException
+//	{
+//		final Client client = clientService.updateUser2FA(use2FA);
+//		if (use2FA) {
+//			return new GenericResponse(clientService.generateQRUrl(client));
+//		}
+//		return null;
+//	}
 	
 	// ============== NON-API ============
 	
-	private SimpleMailMessage constructResendVerificationTokenEmail(final String contextPath, final Locale locale, final VerificationToken newToken, final User user) {
+	private SimpleMailMessage constructResendVerificationTokenEmail(final String contextPath, final Locale locale, final VerificationToken newToken, final Client client) {
 		final String confirmationUrl = contextPath + "/registrationConfirm.html?token=" + newToken.getToken();
 		final String message = messages.getMessage("message.resendToken", null, locale);
-		return constructEmail("Resend Registration Token", message + " \r\n" + confirmationUrl, user);
+		return constructEmail("Resend Registration Token", message + " \r\n" + confirmationUrl, client);
 	}
 	
-	private SimpleMailMessage constructResetTokenEmail(final String contextPath, final Locale locale, final String token, final User user) {
-		final String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
+	private SimpleMailMessage constructResetTokenEmail(final String contextPath, final Locale locale, final String token, final Client client) {
+		final String url = contextPath + "/user/changePassword?id=" + client.get_id() + "&token=" + token;
 		final String message = messages.getMessage("message.resetPassword", null, locale);
-		return constructEmail("Reset Password", message + " \r\n" + url, user);
+		return constructEmail("Reset Password", message + " \r\n" + url, client);
 	}
 	
-	private SimpleMailMessage constructEmail(String subject, String body, User user) {
+	private SimpleMailMessage constructEmail(String subject, String body, Client client) {
 		final SimpleMailMessage email = new SimpleMailMessage();
 		email.setSubject(subject);
 		email.setText(body);
-		email.setTo(user.getEmail());
+		email.setTo(client.getEmail());
 		email.setFrom(env.getProperty("support.email"));
 		return email;
 	}
@@ -208,19 +212,19 @@ public class RegistrationController {
 		// request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 	}
 	
-	public void authWithoutPassword(User user) {
-		//TODO Throws NPE if user doesn't have any roles
+	public void authWithoutPassword(Client client) {
+		//TODO Throws NPE if client doesn't have any roles
 		Authentication authentication = null;
 		try
 		{
-			List<Privilege> privileges = user.getRoles().stream().map(role -> role.getPrivileges()).flatMap(list -> list.stream()).distinct().collect(Collectors.toList());
+			List<Privilege> privileges = client.getRoles().stream().map(role -> role.getPrivileges()).flatMap(list -> list.stream()).distinct().collect(Collectors.toList());
 			List<GrantedAuthority> authorities = privileges.stream().map(p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
-			authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+			authentication = new UsernamePasswordAuthenticationToken(client, null, authorities);
 		}
 		catch (NullPointerException e)
 		{
 			List<GrantedAuthority> authorities = Collections.emptyList();
-			authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+			authentication = new UsernamePasswordAuthenticationToken(client, null, authorities);
 		}
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
