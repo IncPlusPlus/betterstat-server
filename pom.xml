@@ -136,6 +136,13 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+<!--        Others-->
+
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>1.5.0</version>
+        </dependency>
 <!--        https://github.com/springfox/springfox/issues/2932-->
         <dependency>
             <groupId>org.springframework.plugin</groupId>
