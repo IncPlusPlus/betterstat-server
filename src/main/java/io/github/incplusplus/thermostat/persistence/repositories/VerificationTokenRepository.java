@@ -16,7 +16,7 @@ public interface VerificationTokenRepository extends MongoRepository<Verificatio
 
     VerificationToken findByToken(String token);
 
-    VerificationToken findByUser(User user);
+    VerificationToken findByClient(User user);
 
     Stream<VerificationToken> findAllByExpiryDateLessThan(Date now);
 

@@ -98,14 +98,14 @@ public class ClientServiceImpl implements ClientService
 	@Override
 	public void deleteUser(final Client client)
 	{
-		final VerificationToken verificationToken = tokenRepository.findByUser(client);
+		final VerificationToken verificationToken = tokenRepository.findByClient(client);
 		
 		if (verificationToken != null)
 		{
 			tokenRepository.delete(verificationToken);
 		}
 		
-		final PasswordResetToken passwordToken = passwordTokenRepository.findByUser(client);
+		final PasswordResetToken passwordToken = passwordTokenRepository.findByClient(client);
 		
 		if (passwordToken != null)
 		{

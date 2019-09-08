@@ -18,10 +18,6 @@ public class Client extends User
 	
 	private String lastName;
 	
-	private String email;
-	
-	private String password;
-	
 	private boolean enabled;
 	
 //	private boolean isUsing2FA;
@@ -56,22 +52,12 @@ public class Client extends User
 	
 	public String getEmail()
 	{
-		return email;
+		return getUsername();
 	}
 	
 	public void setEmail(final String username)
 	{
-		this.email = username;
-	}
-	
-	public String getPassword()
-	{
-		return password;
-	}
-	
-	public void setPassword(final String password)
-	{
-		this.password = password;
+		setUsername(username);
 	}
 	
 	public boolean isEnabled()
@@ -109,7 +95,7 @@ public class Client extends User
 	{
 		final int prime = 31;
 		int result = 1;
-		result = (prime * result) + ((email == null) ? 0 : email.hashCode());
+		result = (prime * result) + ((getUsername() == null) ? 0 : getUsername().hashCode());
 		return result;
 	}
 	
@@ -129,7 +115,7 @@ public class Client extends User
 			return false;
 		}
 		final Client client = (Client) obj;
-		return email.equals(client.email);
+		return getUsername().equals(client.getUsername());
 	}
 	
 	@Override
@@ -139,8 +125,8 @@ public class Client extends User
 		builder.append("User [id=").append(get_id())
 				.append(", firstName=").append(firstName)
 				.append(", lastName=").append(lastName)
-				.append(", email=").append(email)
-				.append(", password=").append(password)
+				.append(", email=").append(getUsername())
+				.append(", password=").append(getPassword())
 				.append(", enabled=").append(enabled)
 //				.append(", isUsing2FA=").append(isUsing2FA)
 				.append(", secret=").append(secret)

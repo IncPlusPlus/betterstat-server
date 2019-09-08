@@ -14,7 +14,7 @@ public interface PasswordResetTokenRepository extends MongoRepository<PasswordRe
 
     PasswordResetToken findByToken(String token);
 
-    PasswordResetToken findByUser(User user);
+    PasswordResetToken findByClient(User user);
 
     Stream<PasswordResetToken> findAllByExpiryDateLessThan(Date now);
 
