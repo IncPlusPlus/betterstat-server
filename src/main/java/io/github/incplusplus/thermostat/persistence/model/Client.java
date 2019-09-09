@@ -24,6 +24,8 @@ public class Client extends User
 	
 	private String secret;
 	
+	private String email;
+	
 	public Client()
 	{
 		this.secret = Base32.random();
@@ -57,7 +59,15 @@ public class Client extends User
 	
 	public void setEmail(final String username)
 	{
+		this.email=username;
 		setUsername(username);
+	}
+	
+	@Override
+	public void setUsername(final String username)
+	{
+		this.email=username;
+		super.setUsername(username);
 	}
 	
 	public boolean isEnabled()
