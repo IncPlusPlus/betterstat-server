@@ -234,7 +234,6 @@
 
 
     <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <!-- Only use this section if you have an older version of Java sitting at %JAVA_HOME% and can't change it. -->
             <!-- <plugin>
