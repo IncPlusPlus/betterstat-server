@@ -8,7 +8,7 @@ services:
 matrix:
   include:
     - jdk: oraclejdk11
-      script: mvn clean install
+      script: mvn clean jacoco:prepare-agent install jacoco:report
       after_success:
         - bash <(curl -s https://codecov.io/bash)
     - jdk: openjdk11
