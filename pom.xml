@@ -35,7 +35,7 @@
         <repository>
             <id>JFrog</id>
             <name>JFrog Snapshot Repository</name>
-            <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
         </repository>
         <repository>
             <id>spring-milestones</id>
@@ -48,21 +48,21 @@
         <repository>
             <id>repository.springframework.maven.release</id>
             <name>Spring Framework Maven Release Repository</name>
-            <url>http://maven.springframework.org/milestone/</url>
+            <url>https://maven.springframework.org/milestone/</url>
         </repository>
         <repository>
             <id>org.springframework</id>
-            <url> http://maven.springframework.org/snapshot</url>
+            <url> https://maven.springframework.org/snapshot</url>
         </repository>
         <repository>
             <id>spring-milestone</id>
             <name>Spring Maven MILESTONE Repository</name>
-            <url>http://repo.spring.io/libs-milestone</url>
+            <url>https://repo.spring.io/libs-milestone</url>
         </repository>
         <repository>
             <id>spring-release</id>
             <name>Spring Maven RELEASE Repository</name>
-            <url>http://repo.spring.io/libs-release</url>
+            <url>https://repo.spring.io/libs-release</url>
         </repository>
     </repositories>
 
