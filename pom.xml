@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.incplusplus</groupId>
-    <artifactId>server</artifactId>
+    <artifactId>betterstat-server</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <java.version>14</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -104,23 +104,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-test-autoconfigure</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <!--<editor-fold desc="For sending mail (maybe add Sendgrid to instructions?)">-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.thymeleaf.extras</groupId>-->
-<!--            <artifactId>thymeleaf-extras-springsecurity4</artifactId>-->
-<!--        </dependency>-->
+        <!--</editor-fold>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -131,50 +125,24 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>2.1.6.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
 
 <!--        Others-->
 
-        <dependency>
-            <groupId>org.passay</groupId>
-            <artifactId>passay</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-<!--        https://github.com/springfox/springfox/issues/2932-->
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-core</artifactId>
-            <version>1.2.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-otp-java</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <version>2.1.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>5.1.8.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.12.2</version>
-            <scope>compile</scope>
-        </dependency>
 <!--        <dependency>-->
-<!--            <groupId>org.springframework.data</groupId>-->
-<!--            <artifactId>spring-data-mongodb</artifactId>-->
-<!--            <version>2.1.9.RELEASE</version>-->
+<!--            <groupId>org.passay</groupId>-->
+<!--            <artifactId>passay</artifactId>-->
+<!--            <version>1.5.0</version>-->
 <!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.jboss.aerogear</groupId>-->
+<!--            <artifactId>aerogear-otp-java</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
 
 <!--        Springfox-->
 
@@ -187,24 +155,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>io.springfox</groupId>-->
-        <!--            <artifactId>springfox-data-rest</artifactId>-->
-        <!--            <version>3.0.0-SNAPSHOT</version>-->
-        <!--        </dependency>-->
-
-<!--        Other stuff-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>net.logstash.logback</groupId>-->
-        <!--            <artifactId>logstash-logback-encoder</artifactId>-->
-        <!--            <version>4.8</version>-->
-        <!--        </dependency>-->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>28.0-jre</version>
         </dependency>
 
 <!--        TESTS-->
@@ -229,6 +179,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <version>2.1.6.RELEASE</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.1.8.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.12.2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

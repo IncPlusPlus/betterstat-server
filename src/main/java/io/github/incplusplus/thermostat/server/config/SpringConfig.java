@@ -1,7 +1,9 @@
 package io.github.incplusplus.thermostat.server.config;
 
+import io.github.incplusplus.thermostat.Application;
 import io.github.incplusplus.thermostat.server.beans.Tags;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.PathSelectors;
@@ -21,7 +23,7 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 
 @EnableSwagger2WebMvc
-//@ComponentScan("io.github.incplusplus.thermostat")
+@ComponentScan(basePackageClasses = Application.class)
 @Configuration
 public class SpringConfig
 {
