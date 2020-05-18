@@ -1,9 +1,8 @@
-package io.github.incplusplus.thermostat.server;
+package io.github.incplusplus.betterstat.server;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.SpringApplication;
 
 //@SpringBootApplication
 public class ServerApplication

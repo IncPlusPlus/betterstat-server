@@ -1,0 +1,55 @@
+package io.github.incplusplus.betterstat.statemachine;
+
+import io.github.incplusplus.betterstat.persistence.model.Event;
+import io.github.incplusplus.betterstat.persistence.model.States;
+import io.github.incplusplus.betterstat.persistence.model.Thermostat;
+import io.github.incplusplus.betterstat.persistence.repositories.ThermostatRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.config.StateMachineFactory;
+import org.springframework.statemachine.persist.StateMachinePersister;
+import org.springframework.stereotype.Component;
+
+import java.util.UUID;
+
+@Component
+public class StateHandler {
+	@Autowired
+	private StateMachineFactory<States, Event> orderStateMachineFactory;
+	@Autowired
+	private StateMachinePersister<States, Event, UUID> persister;
+	@Autowired
+	private ThermostatRepository thermostatRepository;
+	
+	public boolean sendEvent(Message<Event> message, Thermostat thermostat) throws Exception {
+		boolean result = false;
+		StateMachine<States, Event> thermostatStateMachine = orderStateMachineFactory.getStateMachine(
+				thermostat.getId());
+		thermostatStateMachine.start();
+		try {
+			persister.restore(thermostatStateMachine, thermostat.getId());
+			result = thermostatStateMachine.sendEvent(message);
+			persister.persist(thermostatStateMachine, thermostat.getId());
+			thermostatRepository.save(thermostat);
+			return result;
+		}
+		finally {
+			thermostatStateMachine.stop();
+		}
+	}
+	
+	public void createThermostatStateMachine(Thermostat thermostat) throws Exception {
+		StateMachine<States, Event> thermostatStateMachine = orderStateMachineFactory.getStateMachine(
+				thermostat.getId());
+		thermostatStateMachine.start();
+		thermostat.setState(thermostatStateMachine.getState().getId());
+		try {
+			persister.persist(thermostatStateMachine, thermostat.getId());
+			thermostatRepository.save(thermostat);
+		}
+		finally {
+			thermostatStateMachine.stop();
+		}
+	}
+}
