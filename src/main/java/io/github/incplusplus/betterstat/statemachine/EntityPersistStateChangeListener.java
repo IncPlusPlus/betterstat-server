@@ -12,21 +12,28 @@ import org.springframework.statemachine.transition.Transition;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EntityPersistStateChangeListener implements PersistStateMachineHandler.PersistStateChangeListener {
-	private final static Logger logger = LoggerFactory.getLogger(EntityPersistStateChangeListener.class);
-	
-	private final ThermostatRepository thermostatRepository;
-	
-	@Autowired
-	public EntityPersistStateChangeListener(
-			ThermostatRepository thermostatRepository) {this.thermostatRepository = thermostatRepository;}
-	
-	@Override
-	public void onPersist(State<String, String> state, Message<String> message, Transition<String, String> transition,
-	                      StateMachine<String, String> stateMachine) {
-		//		Thermostat thermostat =message.getHeaders().get(THERMOSTAT_HEADER,Thermostat.class);
-		//		thermostat.setst
-		//		logger.debug("Persisting: the new thermostat.. {}", thermostat);
-		//		thermostatRepository.save(thermostat);
-	}
+public class EntityPersistStateChangeListener
+    implements PersistStateMachineHandler.PersistStateChangeListener {
+
+  private static final Logger logger =
+      LoggerFactory.getLogger(EntityPersistStateChangeListener.class);
+
+  private final ThermostatRepository thermostatRepository;
+
+  @Autowired
+  public EntityPersistStateChangeListener(ThermostatRepository thermostatRepository) {
+    this.thermostatRepository = thermostatRepository;
+  }
+
+  @Override
+  public void onPersist(
+      State<String, String> state,
+      Message<String> message,
+      Transition<String, String> transition,
+      StateMachine<String, String> stateMachine) {
+    //		Thermostat thermostat =message.getHeaders().get(THERMOSTAT_HEADER,Thermostat.class);
+    //		thermostat.setst
+    //		logger.debug("Persisting: the new thermostat.. {}", thermostat);
+    //		thermostatRepository.save(thermostat);
+  }
 }

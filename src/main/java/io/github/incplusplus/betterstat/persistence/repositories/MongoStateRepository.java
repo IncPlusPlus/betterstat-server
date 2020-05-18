@@ -4,5 +4,4 @@ import org.springframework.statemachine.data.mongodb.MongoDbStateMachineReposito
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MongoStateRepository extends MongoDbStateMachineRepository {
-}
+public interface MongoStateRepository extends MongoDbStateMachineRepository {}

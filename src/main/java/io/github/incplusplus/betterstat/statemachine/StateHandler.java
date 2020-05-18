@@ -13,43 +13,41 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StateHandler {
-	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-	@Autowired
-	private StateMachineFactory<States, Event> orderStateMachineFactory;
-	@Autowired
-	private StateMachinePersister<States, Event, String> persister;
-	@Autowired
-	private ThermostatRepository thermostatRepository;
-	
-	public boolean sendEvent(Message<Event> message, Thermostat thermostat) throws Exception {
-		boolean result;
-		StateMachine<States, Event> thermostatStateMachine = orderStateMachineFactory.getStateMachine(
-				thermostat.getId());
-		thermostatStateMachine.start();
-		try {
-			persister.restore(thermostatStateMachine, thermostat.getId());
-			result = thermostatStateMachine.sendEvent(message);
-			persister.persist(thermostatStateMachine, thermostat.getId());
-			thermostatRepository.save(thermostat);
-			return result;
-		}
-		finally {
-			thermostatStateMachine.stop();
-		}
-	}
-	
-	public Thermostat createThermostatStateMachine(Thermostat thermostat) throws Exception {
-		StateMachine<States, Event> thermostatStateMachine = orderStateMachineFactory.getStateMachine(
-				thermostat.getId());
-		thermostatStateMachine.start();
-		thermostat.setState(thermostatStateMachine.getState().getId());
-		try {
-			Thermostat persistedThermostat = thermostatRepository.save(thermostat);
-			persister.persist(thermostatStateMachine, persistedThermostat.getId());
-			return persistedThermostat;
-		}
-		finally {
-			thermostatStateMachine.stop();
-		}
-	}
+
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  @Autowired
+  private StateMachineFactory<States, Event> orderStateMachineFactory;
+
+  @Autowired private StateMachinePersister<States, Event, String> persister;
+  @Autowired private ThermostatRepository thermostatRepository;
+
+  public boolean sendEvent(Message<Event> message, Thermostat thermostat) throws Exception {
+    boolean result;
+    StateMachine<States, Event> thermostatStateMachine =
+        orderStateMachineFactory.getStateMachine(thermostat.getId());
+    thermostatStateMachine.start();
+    try {
+      persister.restore(thermostatStateMachine, thermostat.getId());
+      result = thermostatStateMachine.sendEvent(message);
+      persister.persist(thermostatStateMachine, thermostat.getId());
+      thermostatRepository.save(thermostat);
+      return result;
+    } finally {
+      thermostatStateMachine.stop();
+    }
+  }
+
+  public Thermostat createThermostatStateMachine(Thermostat thermostat) throws Exception {
+    StateMachine<States, Event> thermostatStateMachine =
+        orderStateMachineFactory.getStateMachine(thermostat.getId());
+    thermostatStateMachine.start();
+    thermostat.setState(thermostatStateMachine.getState().getId());
+    try {
+      Thermostat persistedThermostat = thermostatRepository.save(thermostat);
+      persister.persist(thermostatStateMachine, persistedThermostat.getId());
+      return persistedThermostat;
+    } finally {
+      thermostatStateMachine.stop();
+    }
+  }
 }
