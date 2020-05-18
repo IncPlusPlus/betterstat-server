@@ -342,6 +342,8 @@
               <execution>
                 <configuration>
                   <target>
+                    <taskdef classpathref="maven.plugin.classpath"
+                      resource="net/sf/antcontrib/antlib.xml"/>
                     <!--                https://stackoverflow.com/a/4802098/1687436-->
                     <if>
                       <else>
@@ -367,8 +369,6 @@
                         </if>
                       </then>
                     </if>
-                    <taskdef classpathref="maven.plugin.classpath"
-                      resource="net/sf/antcontrib/antlib.xml"/>
                   </target>
                 </configuration>
                 <goals>
