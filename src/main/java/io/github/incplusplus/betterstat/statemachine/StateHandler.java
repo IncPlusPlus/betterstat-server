@@ -11,14 +11,12 @@ import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class StateHandler {
 	@Autowired
 	private StateMachineFactory<States, Event> orderStateMachineFactory;
 	@Autowired
-	private StateMachinePersister<States, Event, UUID> persister;
+	private StateMachinePersister<States, Event, String> persister;
 	@Autowired
 	private ThermostatRepository thermostatRepository;
 	
@@ -39,14 +37,15 @@ public class StateHandler {
 		}
 	}
 	
-	public void createThermostatStateMachine(Thermostat thermostat) throws Exception {
+	public Thermostat createThermostatStateMachine(Thermostat thermostat) throws Exception {
 		StateMachine<States, Event> thermostatStateMachine = orderStateMachineFactory.getStateMachine(
 				thermostat.getId());
 		thermostatStateMachine.start();
 		thermostat.setState(thermostatStateMachine.getState().getId());
 		try {
-			persister.persist(thermostatStateMachine, thermostat.getId());
-			thermostatRepository.save(thermostat);
+			Thermostat persistedThermostat = thermostatRepository.save(thermostat);
+			persister.persist(thermostatStateMachine, persistedThermostat.getId());
+			return persistedThermostat;
 		}
 		finally {
 			thermostatStateMachine.stop();

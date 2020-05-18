@@ -1,8 +1,16 @@
-package io.github.incplusplus.betterstat.persistence.model;
+package io.github.incplusplus.betterstat.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.incplusplus.betterstat.persistence.model.FanSetting;
+import io.github.incplusplus.betterstat.persistence.model.States;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.Id;
 
-public class Thermostat {
+import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+
+public class ThermostatDto {
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@Schema(accessMode = READ_ONLY)
 	@Id
 	private String id;
 	private String name;
@@ -10,15 +18,17 @@ public class Thermostat {
 	private boolean airConditioningSupported;
 	private boolean fanSupported;
 	private FanSetting fanSetting;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@Schema(accessMode = READ_ONLY)
 	private States state;
 	
 	@SuppressWarnings("unused")
-	public Thermostat() {
+	public ThermostatDto() {
 		super();
 	}
 	
-	public Thermostat(String id, String name, boolean heatingSupported, boolean airConditioningSupported,
-	                  boolean fanSupported) {
+	public ThermostatDto(String id, String name, boolean heatingSupported, boolean airConditioningSupported,
+	                     boolean fanSupported) {
 		this.id = id;
 		this.name = name;
 		this.heatingSupported = heatingSupported;

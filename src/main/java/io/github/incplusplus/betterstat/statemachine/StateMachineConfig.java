@@ -17,7 +17,6 @@ import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 import org.springframework.statemachine.persist.StateMachinePersister;
 
 import java.util.EnumSet;
-import java.util.UUID;
 
 @Configuration
 @EnableStateMachineFactory
@@ -74,12 +73,6 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
 		return super.isAssignable(builder);
 	}
 	
-	//	@Bean
-	//	public StateMachineRuntimePersister<States, Event, String> stateMachineRuntimePersister(
-	//			MongoDbStateMachineRepository mongoDbStateMachineRepository) {
-	//		return new MongoDbPersistingStateMachineInterceptor<>(mongoDbStateMachineRepository);
-	//	}
-	
 	@Bean
 	public MongoDbRepositoryStateMachinePersist<States, Event> mongoDbRepositoryStateMachinePersist() {
 		return new MongoDbRepositoryStateMachinePersist<>(mongoStateRepository);
@@ -87,13 +80,12 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
 	
 	@Bean
 	public MongoDbPersistingStateMachineInterceptor<States, Event, Thermostat> interceptor() {
-		MongoDbPersistingStateMachineInterceptor<States, Event, Thermostat> interceptor = new MongoDbPersistingStateMachineInterceptor<>(
+		return new MongoDbPersistingStateMachineInterceptor<>(
 				mongoDbRepositoryStateMachinePersist());
-		return interceptor;
 	}
 	
 	@Bean
-	public StateMachinePersister<States, Event, UUID> stateMachinePersister() {
+	public StateMachinePersister<States, Event, String> stateMachinePersister() {
 		return new DefaultStateMachinePersister(mongoDbRepositoryStateMachinePersist());
 	}
 }

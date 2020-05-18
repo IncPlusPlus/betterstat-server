@@ -4,12 +4,13 @@ import io.github.incplusplus.betterstat.persistence.model.Thermostat;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface ThermostatService {
-	Thermostat createThermostat(Thermostat thermostat);
+	Thermostat createThermostat(Thermostat thermostat) throws Exception;
 	
-	Optional<Thermostat> getThermostatById(UUID id);
+	Optional<Thermostat> getThermostatById(String id);
 	
 	List<Thermostat> findAll();
+	
+	void deleteById(String id);
 }
