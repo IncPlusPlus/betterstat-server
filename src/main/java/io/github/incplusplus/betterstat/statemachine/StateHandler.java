@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StateHandler {
+	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 	@Autowired
 	private StateMachineFactory<States, Event> orderStateMachineFactory;
 	@Autowired
@@ -21,7 +22,7 @@ public class StateHandler {
 	private ThermostatRepository thermostatRepository;
 	
 	public boolean sendEvent(Message<Event> message, Thermostat thermostat) throws Exception {
-		boolean result = false;
+		boolean result;
 		StateMachine<States, Event> thermostatStateMachine = orderStateMachineFactory.getStateMachine(
 				thermostat.getId());
 		thermostatStateMachine.start();
