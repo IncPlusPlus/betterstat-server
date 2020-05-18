@@ -93,6 +93,8 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<States, Ev
 
   @Bean
   public StateMachinePersister<States, Event, String> stateMachinePersister() {
+    //TODO: Find a way to make a cleaner version of this.
+    //noinspection rawtypes,unchecked
     return new DefaultStateMachinePersister(mongoDbRepositoryStateMachinePersist());
   }
 }
