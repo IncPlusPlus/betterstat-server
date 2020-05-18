@@ -16,7 +16,7 @@ public class StateHandler {
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Autowired
-  private StateMachineFactory<States, Event> orderStateMachineFactory;
+  private StateMachineFactory<States, Event> thermostatStateMachineFactory;
 
   @Autowired private StateMachinePersister<States, Event, String> persister;
   @Autowired private ThermostatRepository thermostatRepository;
@@ -24,7 +24,7 @@ public class StateHandler {
   public boolean sendEvent(Message<Event> message, Thermostat thermostat) throws Exception {
     boolean result;
     StateMachine<States, Event> thermostatStateMachine =
-        orderStateMachineFactory.getStateMachine(thermostat.getId());
+        thermostatStateMachineFactory.getStateMachine(thermostat.getId());
     thermostatStateMachine.start();
     try {
       persister.restore(thermostatStateMachine, thermostat.getId());
@@ -39,7 +39,7 @@ public class StateHandler {
 
   public Thermostat createThermostatStateMachine(Thermostat thermostat) throws Exception {
     StateMachine<States, Event> thermostatStateMachine =
-        orderStateMachineFactory.getStateMachine(thermostat.getId());
+        thermostatStateMachineFactory.getStateMachine(thermostat.getId());
     thermostatStateMachine.start();
     thermostat.setState(thermostatStateMachine.getState().getId());
     try {
