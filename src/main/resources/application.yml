@@ -1,0 +1,37 @@
+application:
+    name: '@project.artifactId@'
+build:
+    timestamp: '@timestamp@'
+    version: '@project.version@'
+server:
+    port: 8080
+    ssl:
+        enabled: false
+        key-store: classpath:keystore.p12
+        key-store-password: yourpassword
+        keyAlias: tomcat
+        keyStoreType: PKCS12
+spring:
+    data:
+        mongodb:
+            uri: mongodb://localhost/betterstat-server
+    profiles:
+        active: '@activatedProperties@'
+    resources:
+        cache:
+            period: 31536000
+            cachecontrol:
+                max-age: 31536000
+        chain:
+            html-application-cache: true
+            enabled: true
+            strategy:
+                content:
+                    enabled: true
+                    paths: /webjars/swagger-ui/**.*
+springdoc:
+    api-docs:
+        groups:
+            enabled: true
+    group-configs: ''
+    version: 0.0.1

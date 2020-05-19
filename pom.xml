@@ -1,288 +1,354 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>betterstat-server</artifactId>
 
-    <groupId>io.github.incplusplus</groupId>
-    <artifactId>server</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repository.spring.release</id>
-            <name>Spring GA Repository</name>
-            <url>https://repo.spring.io/plugins-release/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <url>https://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <repositories>
-        <repository>
-            <id>JFrog</id>
-            <name>JFrog Snapshot Repository</name>
-            <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>repository.springframework.maven.release</id>
-            <name>Spring Framework Maven Release Repository</name>
-            <url>http://maven.springframework.org/milestone/</url>
-        </repository>
-        <repository>
-            <id>org.springframework</id>
-            <url> http://maven.springframework.org/snapshot</url>
-        </repository>
-        <repository>
-            <id>spring-milestone</id>
-            <name>Spring Maven MILESTONE Repository</name>
-            <url>http://repo.spring.io/libs-milestone</url>
-        </repository>
-        <repository>
-            <id>spring-release</id>
-            <name>Spring Maven RELEASE Repository</name>
-            <url>http://repo.spring.io/libs-release</url>
-        </repository>
-    </repositories>
-
-    <parent>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <artifactId>mapstruct-processor</artifactId>
+              <groupId>org.mapstruct</groupId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+            <!-- other annotation processors -->
+          </annotationProcessorPaths>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <!--             Only use this section if you have an older version of Java sitting at %JAVA_HOME% and can't change it. -->
+          <!--                    <fork>true</fork>-->
+          <!--                    <executable>C:\Program Files\Java\jdk-11.0.3\bin\javac</executable>-->
+        </configuration>
+        <version>3.8.1</version>
+      </plugin>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build-info</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.M5</version>
-    </parent>
+        <version>2.2.7.RELEASE</version>
+      </plugin>
+      <plugin>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <configuration>
+          <commitIdGenerationMode>full</commitIdGenerationMode>
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+          </generateGitPropertiesFilename>
+          <includeOnlyProperties>
+            <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+            <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+          </includeOnlyProperties>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+            <id>get-the-git-infos</id>
+            <phase>initialize</phase>
+          </execution>
+        </executions>
+        <groupId>pl.project13.maven</groupId>
+        <version>4.0.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <groupId>com.coveo</groupId>
+        <version>2.9</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>2.22.2</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>2.22.2</version>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <id>jacoco-initialize</id>
+          </execution>
+          <execution>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <id>jacoco-site</id>
+            <phase>package</phase>
+          </execution>
+        </executions>
+        <groupId>org.jacoco</groupId>
+        <version>0.8.5</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>[3.6.0,)</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <id>enforce-maven</id>
+          </execution>
+        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.0.0-M2</version>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <!--        Spring Boot-->
+    <dependency>
+      <artifactId>spring-boot-starter</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <groupId>org.mongodb</groupId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <artifactId>mongodb-driver-core</artifactId>
+      <groupId>org.mongodb</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-statemachine-data-mongodb</artifactId>
+      <groupId>org.springframework.statemachine</groupId>
+      <version>${statemachine.version}</version>
+    </dependency>
+    <!--        <dependency>-->
+    <!--            <groupId>org.springframework.boot</groupId>-->
+    <!--            <artifactId>spring-boot-starter-security</artifactId>-->
+    <!--            <version>RELEASE</version>-->
+    <!--        </dependency>-->
+    <!--<editor-fold desc="For sending mail (maybe add Sendgrid to instructions?)">-->
+    <dependency>
+      <artifactId>spring-boot-starter-mail</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <!--</editor-fold>-->
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-statemachine-core</artifactId>
+      <groupId>org.springframework.statemachine</groupId>
+      <version>${statemachine.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>spring-statemachine-recipes-common</artifactId>
+      <groupId>org.springframework.statemachine</groupId>
+      <version>${statemachine.version}</version>
+    </dependency>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <activatedProperties>dev</activatedProperties>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>ci</id>
-            <properties>
-                <activatedProperties>ci</activatedProperties>
-            </properties>
-            <activation>
-                <property>
-                    <name>environment</name>
-                    <value>test</value>
-                </property>
-            </activation>
-        </profile>
-    </profiles>
+    <!--        Others-->
 
+    <!--        <dependency>-->
+    <!--            <groupId>org.passay</groupId>-->
+    <!--            <artifactId>passay</artifactId>-->
+    <!--            <version>1.5.0</version>-->
+    <!--        </dependency>-->
+    <!--        <dependency>-->
+    <!--            <groupId>org.jboss.aerogear</groupId>-->
+    <!--            <artifactId>aerogear-otp-java</artifactId>-->
+    <!--            <version>1.0.0</version>-->
+    <!--        </dependency>-->
+    <dependency>
+      <artifactId>guava</artifactId>
+      <groupId>com.google.guava</groupId>
+      <version>28.1-jre</version>
+    </dependency>
+    <dependency>
+      <artifactId>mapstruct</artifactId>
+      <groupId>org.mapstruct</groupId>
+      <version>${org.mapstruct.version}</version>
+    </dependency>
+
+    <!--        Documentation-->
+
+    <dependency>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <groupId>org.springdoc</groupId>
+      <version>1.3.9</version>
+    </dependency>
+    <dependency>
+      <artifactId>springdoc-openapi-webmvc-core</artifactId>
+      <groupId>org.springdoc</groupId>
+      <version>1.3.9</version>
+    </dependency>
+
+    <!--        TESTS-->
+
+    <dependency>
+      <artifactId>junit</artifactId>
+      <groupId>junit</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>de.flapdoodle.embed.mongo</artifactId>
+      <groupId>de.flapdoodle.embed</groupId>
+      <scope>test</scope>
+    </dependency>
+    <!--        <dependency>-->
+    <!--            <groupId>io.rest-assured</groupId>-->
+    <!--            <artifactId>rest-assured</artifactId>-->
+    <!--            <scope>test</scope>-->
+    <!--        </dependency>-->
+    <!--        <dependency>-->
+    <!--            <groupId>org.springframework</groupId>-->
+    <!--            <artifactId>spring-test</artifactId>-->
+    <!--            <version>5.1.8.RELEASE</version>-->
+    <!--        </dependency>-->
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>assertj-core</artifactId>
+      <groupId>org.assertj</groupId>
+    </dependency>
+  </dependencies>
+  <dependencyManagement>
     <dependencies>
-
-<!--        Spring Boot-->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-test-autoconfigure</artifactId>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.thymeleaf.extras</groupId>-->
-<!--            <artifactId>thymeleaf-extras-springsecurity4</artifactId>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.1.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>2.1.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-<!--        Others-->
-
-        <dependency>
-            <groupId>org.passay</groupId>
-            <artifactId>passay</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-<!--        https://github.com/springfox/springfox/issues/2932-->
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-core</artifactId>
-            <version>1.2.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.aerogear</groupId>
-            <artifactId>aerogear-otp-java</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <version>2.1.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>5.1.8.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.12.2</version>
-            <scope>compile</scope>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.data</groupId>-->
-<!--            <artifactId>spring-data-mongodb</artifactId>-->
-<!--            <version>2.1.9.RELEASE</version>-->
-<!--        </dependency>-->
-
-<!--        Springfox-->
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>io.springfox</groupId>-->
-        <!--            <artifactId>springfox-data-rest</artifactId>-->
-        <!--            <version>3.0.0-SNAPSHOT</version>-->
-        <!--        </dependency>-->
-
-<!--        Other stuff-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>net.logstash.logback</groupId>-->
-        <!--            <artifactId>logstash-logback-encoder</artifactId>-->
-        <!--            <version>4.8</version>-->
-        <!--        </dependency>-->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>28.0-jre</version>
-        </dependency>
-
-<!--        TESTS-->
-
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>1.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.1.6.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <artifactId>spring-boot-dependencies</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>2.3.0.RC1</version>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
 
+  <groupId>io.github.incplusplus</groupId>
 
-    <build>
-        <plugins>
-            <!-- Only use this section if you have an older version of Java sitting at %JAVA_HOME% and can't change it. -->
-            <!-- <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <verbose>true</verbose>
-                    <fork>true</fork>
-                    <executable>C:\Program Files\Java\jdk-11.0.3\bin\javac</executable>
-                </configuration>
-            </plugin> -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.7.RELEASE</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+  <modelVersion>4.0.0</modelVersion>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repository.spring.release</id>
+      <name>Spring GA Repository</name>
+      <url>https://repo.spring.io/plugins-release/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-snapshots</id>
+      <url>https://repo.spring.io/snapshot</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <profiles>
+    <profile>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <id>dev</id>
+      <properties>
+        <activatedProperties>dev</activatedProperties>
+      </properties>
+    </profile>
+    <profile>
+      <activation>
+        <property>
+          <name>environment</name>
+          <value>test</value>
+        </property>
+      </activation>
+      <id>ci</id>
+      <properties>
+        <activatedProperties>ci</activatedProperties>
+      </properties>
+    </profile>
+  </profiles>
+
+  <properties>
+    <java.version>14</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <statemachine.version>2.2.0.RELEASE</statemachine.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+    <repository>
+      <id>repository.springframework.maven.release</id>
+      <name>Spring Framework Maven Release Repository</name>
+      <url>http://maven.springframework.org/milestone/</url>
+    </repository>
+    <repository>
+      <id>org.springframework</id>
+      <url>https://maven.springframework.org/snapshot</url>
+    </repository>
+    <repository>
+      <id>spring-milestone</id>
+      <name>Spring Maven MILESTONE Repository</name>
+      <url>https://repo.spring.io/libs-milestone</url>
+    </repository>
+    <repository>
+      <id>spring-release</id>
+      <name>Spring Maven RELEASE Repository</name>
+      <url>https://repo.spring.io/libs-release</url>
+    </repository>
+  </repositories>
+
+  <version>1.0-SNAPSHOT</version>
 
 </project>
