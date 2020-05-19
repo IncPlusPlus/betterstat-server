@@ -104,69 +104,6 @@
         <groupId>org.jacoco</groupId>
         <version>0.8.5</version>
       </plugin>
-<!--      <plugin>-->
-<!--        <artifactId>maven-antrun-plugin</artifactId>-->
-<!--        <dependencies>-->
-<!--          <dependency>-->
-<!--            <artifactId>ant-contrib</artifactId>-->
-<!--            <exclusions>-->
-<!--              <exclusion>-->
-<!--                <artifactId>ant</artifactId>-->
-<!--                <groupId>ant</groupId>-->
-<!--              </exclusion>-->
-<!--            </exclusions>-->
-<!--            <groupId>ant-contrib</groupId>-->
-<!--            <version>1.0b3</version>-->
-<!--          </dependency>-->
-<!--          <dependency>-->
-<!--            <artifactId>ant-nodeps</artifactId>-->
-<!--            <groupId>org.apache.ant</groupId>-->
-<!--            <version>1.8.1</version>-->
-<!--          </dependency>-->
-<!--        </dependencies>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <configuration>-->
-<!--              <target>-->
-<!--                &lt;!&ndash;                https://stackoverflow.com/a/4802098/1687436&ndash;&gt;-->
-<!--                <taskdef classpathref="maven.plugin.classpath"-->
-<!--                  resource="net/sf/antcontrib/antlib.xml"/>-->
-<!--                <if>-->
-<!--                  <else>-->
-<!--                    <echo-->
-<!--                      message="Skipping antrun. Project is not in 'jar' packaging but instead is type '${project.packaging}'"/>-->
-<!--                  </else>-->
-<!--                  <equals arg1="${project.packaging}" arg2="jar"/>-->
-<!--                  <then>-->
-<!--                    <if>-->
-<!--                      <available file="${project.build.directory}/site/jacoco/jacoco.xml"/>-->
-<!--                      <else>-->
-<!--                        <echo-->
-<!--                          message="Skipped copy+replace as '${project.build.directory}/site/jacoco/jacoco.xml' isn't present."/>-->
-<!--                      </else>-->
-<!--                      <then>-->
-<!--                        <copy file="${project.build.directory}/site/jacoco/jacoco.xml"-->
-<!--                          tofile="${project.build.directory}/jacoco_fixed_for_codeclimate.xml"/>-->
-<!--                        <replace-->
-<!--                          file="${project.build.directory}/jacoco_fixed_for_codeclimate.xml"-->
-<!--                          token="io/github/"-->
-<!--                          value="${project.build.sourceDirectory}/io/github/"/>-->
-<!--                      </then>-->
-<!--                    </if>-->
-<!--                  </then>-->
-<!--                </if>-->
-<!--              </target>-->
-<!--            </configuration>-->
-<!--            <goals>-->
-<!--              <goal>run</goal>-->
-<!--            </goals>-->
-<!--            <phase>post-integration-test</phase>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        &lt;!&ndash;        https://stackoverflow.com/a/4802098/1687436&ndash;&gt;-->
-<!--        <version>1.8</version>-->
-<!--      </plugin>-->
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>

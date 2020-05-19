@@ -19,6 +19,6 @@ script:
   - fossa init
   - fossa analyze
 after_success:
-  - "./cc-test-reporter format-coverage -t jacoco ./target/jacoco_fixed_for_codeclimate.xml"
-  - "./cc-test-reporter upload-coverage"
+  - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage target/site/jacoco/jacoco.xml --input-type jacoco
+  - ./cc-test-reporter upload-coverage
   - bash <(curl -s https://codecov.io/bash)
