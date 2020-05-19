@@ -335,17 +335,17 @@
     </repository>
     <repository>
       <id>org.springframework</id>
-      <url>http://maven.springframework.org/snapshot</url>
+      <url>https://maven.springframework.org/snapshot</url>
     </repository>
     <repository>
       <id>spring-milestone</id>
       <name>Spring Maven MILESTONE Repository</name>
-      <url>http://repo.spring.io/libs-milestone</url>
+      <url>https://repo.spring.io/libs-milestone</url>
     </repository>
     <repository>
       <id>spring-release</id>
       <name>Spring Maven RELEASE Repository</name>
-      <url>http://repo.spring.io/libs-release</url>
+      <url>https://repo.spring.io/libs-release</url>
     </repository>
   </repositories>
 
