@@ -7,6 +7,7 @@
 [![codecov](https://codecov.io/gh/IncPlusPlus/betterstat-server/branch/master/graph/badge.svg)](https://codecov.io/gh/IncPlusPlus/betterstat-server)
 [![Build Status](https://travis-ci.com/IncPlusPlus/betterstat-server.svg?branch=master)](https://travis-ci.com/IncPlusPlus/betterstat-server)
 [![Known Vulnerabilities](https://snyk.io/test/github/IncPlusPlus/betterstat-server/badge.svg)](https://snyk.io/test/github/IncPlusPlus/betterstat-server)
+[![DepShield Badge](https://depshield.sonatype.org/badges/IncPlusPlus/betterstat-server/depshield.svg)](https://depshield.github.io)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/IncPlusPlus/betterstat-server.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/IncPlusPlus/betterstat-server/alerts/)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FIncPlusPlus%2Fbetterstat-server.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FIncPlusPlus%2Fbetterstat-server?ref=badge_shield)
 
