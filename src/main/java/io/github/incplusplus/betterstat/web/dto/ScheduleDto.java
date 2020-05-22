@@ -63,6 +63,11 @@ public class ScheduleDto {
     /** The set point in degrees celsius. */
     private BigDecimal setPoint;
 
+    @Schema(
+        type = "string",
+        format = "time",
+        example = "14:43:45.829",
+        pattern = "^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]{3})?$")
     private LocalTime time;
 
     @SuppressWarnings("unused")
