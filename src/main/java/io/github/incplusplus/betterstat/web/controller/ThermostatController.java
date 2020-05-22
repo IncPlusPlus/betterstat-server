@@ -5,6 +5,7 @@ import io.github.incplusplus.betterstat.persistence.model.Thermostat;
 import io.github.incplusplus.betterstat.service.ThermostatService;
 import io.github.incplusplus.betterstat.statemachine.StateHandler;
 import io.github.incplusplus.betterstat.web.dto.ThermostatDto;
+import io.github.incplusplus.betterstat.web.exception.ObjectNotFoundException;
 import io.github.incplusplus.betterstat.web.mappers.ThermostatMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -52,7 +53,7 @@ public class ThermostatController {
   public boolean sendEvent(@PathVariable String id, @RequestBody Event event) throws Exception {
     Optional<Thermostat> thermostatOptional = thermostatService.getThermostatById(id);
     if (thermostatOptional.isEmpty()) {
-      throw new RuntimeException("No such thermostat");
+      throw new ObjectNotFoundException(id, Thermostat.class);
     }
     Thermostat thermostat = thermostatOptional.get();
     Message<Event> message =
