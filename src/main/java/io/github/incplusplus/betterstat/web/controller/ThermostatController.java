@@ -1,4 +1,4 @@
-package io.github.incplusplus.betterstat.web.controller.thermostat;
+package io.github.incplusplus.betterstat.web.controller;
 
 import io.github.incplusplus.betterstat.persistence.model.Event;
 import io.github.incplusplus.betterstat.persistence.model.Thermostat;
