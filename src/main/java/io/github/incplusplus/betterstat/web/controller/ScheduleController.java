@@ -54,22 +54,12 @@ public class ScheduleController {
   @PutMapping("/{id}")
   public ScheduleDto updateSchedule(@PathVariable String id, @RequestBody ScheduleDto scheduleDto)
       throws ObjectNotFoundException {
-    if (!scheduleService.existsById(id)) throw new ObjectNotFoundException(id, Schedule.class);
-    // If it already exists, set the ID of the DTO to the ID we know exists in our repository.
-    scheduleDto.setId(id);
-    // Saving an object with an ID that already exists will simply update it.
-    // https://stackoverflow.com/a/56207430/1687436
     return scheduleMapper.toDTO(
-        scheduleService.createSchedule(scheduleMapper.fromDto(scheduleDto)));
+        scheduleService.updateSchedule(id, scheduleMapper.fromDto(scheduleDto)));
   }
 
   @DeleteMapping("/{id}")
   public ScheduleDto deleteSchedule(@PathVariable String id) throws ObjectNotFoundException {
-    Optional<Schedule> scheduleOptional = scheduleService.getScheduleById(id);
-    if (scheduleOptional.isEmpty()) {
-      throw new ObjectNotFoundException(id, Schedule.class);
-    }
-    scheduleService.deleteById(id);
-    return scheduleMapper.toDTO(scheduleOptional.get());
+    return scheduleMapper.toDTO(scheduleService.deleteById(id));
   }
 }

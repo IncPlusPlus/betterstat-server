@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.incplusplus.betterstat.persistence.model.FanSetting;
 import io.github.incplusplus.betterstat.persistence.model.States;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.Size;
 
 public class ThermostatDto {
 
@@ -18,6 +19,9 @@ public class ThermostatDto {
   private boolean airConditioningSupported;
   private boolean fanSupported;
   private FanSetting fanSetting;
+
+  @Size(max = 7)
+  private ScheduleDto[] schedules;
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
@@ -95,6 +99,14 @@ public class ThermostatDto {
 
   public void setState(States state) {
     this.state = state;
+  }
+
+  public ScheduleDto[] getSchedules() {
+    return schedules;
+  }
+
+  public void setSchedules(ScheduleDto[] schedules) {
+    this.schedules = schedules;
   }
 
   @Override

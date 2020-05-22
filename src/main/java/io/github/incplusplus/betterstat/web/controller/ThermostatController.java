@@ -46,7 +46,7 @@ public class ThermostatController {
 
   @GetMapping("/{id}")
   public ThermostatDto getById(@PathVariable String id) {
-    return mapper.toDTO(thermostatService.getThermostatById(id).orElseThrow());
+    return mapper.toDto(thermostatService.getThermostatById(id).orElseThrow());
   }
 
   @PutMapping("/{id}/sendEvent")
@@ -62,12 +62,19 @@ public class ThermostatController {
   }
 
   @PostMapping
-  public Thermostat addThermostat(@RequestBody Thermostat thermostat) throws Exception {
-    return thermostatService.createThermostat(thermostat);
+  public ThermostatDto addThermostat(@RequestBody ThermostatDto thermostat) throws Exception {
+    return mapper.toDto(thermostatService.createThermostat(mapper.fromDto(thermostat)));
+  }
+
+  @PutMapping("/{id}")
+  public ThermostatDto updateThermostat(
+      @PathVariable String id, @RequestBody ThermostatDto thermostatDto)
+      throws ObjectNotFoundException {
+    return mapper.toDto(thermostatService.updateThermostat(id, mapper.fromDto(thermostatDto)));
   }
 
   @DeleteMapping("/{id}")
-  public void deleteThermostat(@PathVariable String id) {
-    thermostatService.deleteById(id);
+  public ThermostatDto deleteThermostat(@PathVariable String id) throws ObjectNotFoundException {
+    return mapper.toDto(thermostatService.deleteById(id));
   }
 }
