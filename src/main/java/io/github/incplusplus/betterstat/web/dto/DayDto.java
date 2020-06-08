@@ -8,13 +8,14 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
+import javax.validation.constraints.NotNull;
 
 public class DayDto {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
   private String id;
 
-  private String name;
+  @NotNull private String name;
   private NavigableSet<SetPointTimeTuple> times = new TreeSet<>();
 
   @SuppressWarnings("unused")

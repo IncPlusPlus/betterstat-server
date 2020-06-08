@@ -8,6 +8,7 @@ import io.github.incplusplus.betterstat.web.mappers.DayMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,12 +47,12 @@ public class DayController {
   }
 
   @PostMapping
-  public DayDto createNewDay(@RequestBody DayDto dayDto) {
+  public DayDto createNewDay(@Valid @RequestBody DayDto dayDto) {
     return dayMapper.toDTO(dayService.createDay(dayMapper.fromDto(dayDto)));
   }
 
   @PutMapping("/{id}")
-  public DayDto updateDay(@PathVariable String id, @RequestBody DayDto dayDto)
+  public DayDto updateDay(@PathVariable String id, @Valid @RequestBody DayDto dayDto)
       throws ObjectNotFoundException {
     return dayMapper.toDTO(dayService.updateDay(id, dayMapper.fromDto(dayDto)));
   }
