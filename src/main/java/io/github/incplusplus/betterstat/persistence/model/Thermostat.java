@@ -1,9 +1,9 @@
 package io.github.incplusplus.betterstat.persistence.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Thermostat {
-
   @Id private String id;
   private String name;
   private boolean heatingSupported;
@@ -11,8 +11,7 @@ public class Thermostat {
   private boolean fanSupported;
   private FanSetting fanSetting;
   private States state;
-  /** An array of 7 schedule ids representing the seven days of the week (with Sunday at position 0) */
-  private String[] schedules;
+  @DBRef private Schedule schedule;
 
   @SuppressWarnings("unused")
   public Thermostat() {
@@ -88,12 +87,12 @@ public class Thermostat {
     this.state = state;
   }
 
-  public String[] getSchedules() {
-    return schedules;
+  public Schedule getSchedule() {
+    return schedule;
   }
 
-  public void setSchedules(String[] schedules) {
-    this.schedules = schedules;
+  public void setSchedule(Schedule schedule) {
+    this.schedule = schedule;
   }
 
   @Override

@@ -4,11 +4,12 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.incplusplus.betterstat.persistence.model.FanSetting;
+import io.github.incplusplus.betterstat.persistence.model.Schedule;
 import io.github.incplusplus.betterstat.persistence.model.States;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.Valid;
 
 public class ThermostatDto {
-
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
   private String id;
@@ -18,8 +19,7 @@ public class ThermostatDto {
   private boolean airConditioningSupported;
   private boolean fanSupported;
   private FanSetting fanSetting;
-
-  private String[] schedules;
+  @Valid private Schedule schedule;
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
@@ -99,12 +99,12 @@ public class ThermostatDto {
     this.state = state;
   }
 
-  public String[] getSchedules() {
-    return schedules;
+  public Schedule getSchedule() {
+    return schedule;
   }
 
-  public void setSchedules(String[] schedules) {
-    this.schedules = schedules;
+  public void setSchedule(Schedule schedule) {
+    this.schedule = schedule;
   }
 
   @Override
