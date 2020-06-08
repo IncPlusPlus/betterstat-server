@@ -4,6 +4,7 @@ import io.github.incplusplus.betterstat.web.util.GenericResponse;
 import io.github.incplusplus.betterstat.web.util.ResponseUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -20,5 +21,11 @@ public class ExceptionsHandler {
   protected ResponseEntity<GenericResponse> handleHttpMessageNotReadable(
       HttpMessageNotReadableException ex, WebRequest request) {
     return ResponseUtils.handleHttpMessageNotReadable(ex);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<GenericResponse> handleValidationExceptions(
+      MethodArgumentNotValidException ex) {
+    return ResponseUtils.handleMethodArgumentNotValid(ex);
   }
 }
