@@ -6,21 +6,24 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import org.springframework.data.annotation.Id;
 
-/** A Schedule is a collection of points in time that are paired with set points. */
-public class Schedule {
+/**
+ * A Day is a collection of points in time that are paired with set points. A single Day represents
+ * a single day.
+ */
+public class Day {
   @Id private String id;
   private String name;
   private NavigableSet<SetPointTimeTuple> times = new TreeSet<>();
 
   @SuppressWarnings("unused")
-  public Schedule() {}
+  public Day() {}
 
-  public Schedule(String id, String name, NavigableSet<SetPointTimeTuple> times) {
+  public Day(String id, String name, NavigableSet<SetPointTimeTuple> times) {
     this(id, name);
     this.times = times;
   }
 
-  public Schedule(String id, String name) {
+  public Day(String id, String name) {
     this.id = id;
     this.name = name;
   }

@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
-public class ScheduleDto {
+public class DayDto {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
   private String id;
@@ -18,14 +18,14 @@ public class ScheduleDto {
   private NavigableSet<SetPointTimeTuple> times = new TreeSet<>();
 
   @SuppressWarnings("unused")
-  public ScheduleDto() {}
+  public DayDto() {}
 
-  public ScheduleDto(String id, String name, NavigableSet<SetPointTimeTuple> times) {
+  public DayDto(String id, String name, NavigableSet<SetPointTimeTuple> times) {
     this(id, name);
     this.times = times;
   }
 
-  public ScheduleDto(String id, String name) {
+  public DayDto(String id, String name) {
     this.id = id;
     this.name = name;
   }
