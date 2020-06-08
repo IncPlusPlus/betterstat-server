@@ -11,8 +11,8 @@ public class Thermostat {
   private boolean fanSupported;
   private FanSetting fanSetting;
   private States state;
-  /** An array of 7 schedules representing the seven days of the week (with Sunday at position 0) */
-  private Schedule[] schedules;
+  /** An array of 7 schedule ids representing the seven days of the week (with Sunday at position 0) */
+  private String[] schedules;
 
   @SuppressWarnings("unused")
   public Thermostat() {
@@ -88,11 +88,11 @@ public class Thermostat {
     this.state = state;
   }
 
-  public Schedule[] getSchedules() {
+  public String[] getSchedules() {
     return schedules;
   }
 
-  public void setSchedules(Schedule[] schedules) {
+  public void setSchedules(String[] schedules) {
     this.schedules = schedules;
   }
 
