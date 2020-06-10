@@ -5,6 +5,12 @@
   <artifactId>betterstat-server</artifactId>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -319,6 +325,12 @@
       <id>ci</id>
       <properties>
         <activatedProperties>ci</activatedProperties>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <activatedProperties>prod</activatedProperties>
       </properties>
     </profile>
   </profiles>
