@@ -45,8 +45,11 @@ public class ThermostatController {
   }
 
   @GetMapping("/{id}")
-  public ThermostatDto getById(@PathVariable String id) {
-    return mapper.toDto(thermostatService.getThermostatById(id).orElseThrow());
+  public ThermostatDto getById(@PathVariable String id) throws ObjectNotFoundException {
+    return mapper.toDto(
+        thermostatService
+            .getThermostatById(id)
+            .orElseThrow(() -> new ObjectNotFoundException(id, Thermostat.class)));
   }
 
   @PutMapping("/{id}/sendEvent")
