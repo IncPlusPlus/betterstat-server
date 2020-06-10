@@ -227,15 +227,6 @@
       <groupId>org.mapstruct</groupId>
       <version>${org.mapstruct.version}</version>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <artifactId>quartz-mongodb</artifactId>-->
-    <!--      <groupId>com.novemberain</groupId>-->
-    <!--      <version>2.2.0-SNAPSHOT</version>-->
-    <!--    </dependency>-->
-    <dependency>
-      <artifactId>spring-boot-starter-quartz</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
 
     <!--        Documentation-->
 
@@ -382,11 +373,6 @@
       <name>Spring Maven RELEASE Repository</name>
       <url>https://repo.spring.io/libs-release</url>
     </repository>
-    <!--    <repository>-->
-    <!--      <id>michaelklishin</id>-->
-    <!--      <name>Quartz MongoDB Repository</name>-->
-    <!--      <url>https://dl.bintray.com/michaelklishin/maven/</url>-->
-    <!--    </repository>-->
   </repositories>
 
   <version>1.0-SNAPSHOT</version>
