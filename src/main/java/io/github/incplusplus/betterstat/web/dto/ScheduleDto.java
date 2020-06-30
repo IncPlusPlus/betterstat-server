@@ -7,6 +7,8 @@ import io.github.incplusplus.betterstat.persistence.model.Day;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ScheduleDto {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -116,5 +118,71 @@ public class ScheduleDto {
 
   public void setSaturday(Day saturday) {
     this.saturday = saturday;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ScheduleDto that = (ScheduleDto) o;
+
+    return new EqualsBuilder()
+        .append(getId(), that.getId())
+        .append(getName(), that.getName())
+        .append(getSunday(), that.getSunday())
+        .append(getMonday(), that.getMonday())
+        .append(getTuesday(), that.getTuesday())
+        .append(getWednesday(), that.getWednesday())
+        .append(getThursday(), that.getThursday())
+        .append(getFriday(), that.getFriday())
+        .append(getSaturday(), that.getSaturday())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getName())
+        .append(getSunday())
+        .append(getMonday())
+        .append(getTuesday())
+        .append(getWednesday())
+        .append(getThursday())
+        .append(getFriday())
+        .append(getSaturday())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "ScheduleDto{"
+        + "id='"
+        + id
+        + '\''
+        + ", name='"
+        + name
+        + '\''
+        + ", sunday="
+        + sunday
+        + ", monday="
+        + monday
+        + ", tuesday="
+        + tuesday
+        + ", wednesday="
+        + wednesday
+        + ", thursday="
+        + thursday
+        + ", friday="
+        + friday
+        + ", saturday="
+        + saturday
+        + '}';
   }
 }

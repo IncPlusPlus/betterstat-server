@@ -1,5 +1,7 @@
 package io.github.incplusplus.betterstat.persistence.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -108,5 +110,45 @@ public class Schedule {
 
   public void setSaturday(Day saturday) {
     this.saturday = saturday;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Schedule schedule = (Schedule) o;
+
+    return new EqualsBuilder()
+        .append(getId(), schedule.getId())
+        .append(getName(), schedule.getName())
+        .append(getSunday(), schedule.getSunday())
+        .append(getMonday(), schedule.getMonday())
+        .append(getTuesday(), schedule.getTuesday())
+        .append(getWednesday(), schedule.getWednesday())
+        .append(getThursday(), schedule.getThursday())
+        .append(getFriday(), schedule.getFriday())
+        .append(getSaturday(), schedule.getSaturday())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getName())
+        .append(getSunday())
+        .append(getMonday())
+        .append(getTuesday())
+        .append(getWednesday())
+        .append(getThursday())
+        .append(getFriday())
+        .append(getSaturday())
+        .toHashCode();
   }
 }

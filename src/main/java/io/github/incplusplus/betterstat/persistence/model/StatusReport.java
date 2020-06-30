@@ -3,6 +3,8 @@ package io.github.incplusplus.betterstat.persistence.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -89,5 +91,41 @@ public class StatusReport {
 
   public void setCurrentState(States currentState) {
     this.currentState = currentState;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    StatusReport that = (StatusReport) o;
+
+    return new EqualsBuilder()
+        .append(getThermostat(), that.getThermostat())
+        .append(getId(), that.getId())
+        .append(getMostRecentIp(), that.getMostRecentIp())
+        .append(getDateTimeAccordingToDevice(), that.getDateTimeAccordingToDevice())
+        .append(getDateTimeReportReceived(), that.getDateTimeReportReceived())
+        .append(getTemperature(), that.getTemperature())
+        .append(getCurrentState(), that.getCurrentState())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getThermostat())
+        .append(getId())
+        .append(getMostRecentIp())
+        .append(getDateTimeAccordingToDevice())
+        .append(getDateTimeReportReceived())
+        .append(getTemperature())
+        .append(getCurrentState())
+        .toHashCode();
   }
 }

@@ -1,5 +1,7 @@
 package io.github.incplusplus.betterstat.persistence.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -49,5 +51,52 @@ public class ThermostatApiUser {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ThermostatApiUser that = (ThermostatApiUser) o;
+
+    return new EqualsBuilder()
+        .append(getId(), that.getId())
+        .append(getThermostat(), that.getThermostat())
+        .append(getUsername(), that.getUsername())
+        .append(getPassword(), that.getPassword())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getThermostat())
+        .append(getUsername())
+        .append(getPassword())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "ThermostatApiUser{"
+        + "id='"
+        + id
+        + '\''
+        + ", thermostat="
+        + thermostat
+        + ", username='"
+        + username
+        + '\''
+        + ", password='"
+        + password
+        + '\''
+        + '}';
   }
 }

@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -89,8 +91,69 @@ public class Day {
     }
 
     @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+
+      SetPointTimeTuple that = (SetPointTimeTuple) o;
+
+      return new EqualsBuilder()
+          .append(getSetPoint(), that.getSetPoint())
+          .append(getTime(), that.getTime())
+          .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+      return new HashCodeBuilder(17, 37).append(getSetPoint()).append(getTime()).toHashCode();
+    }
+
+    @Override
     public int compareTo(SetPointTimeTuple other) {
       return this.getTime().compareTo(other.getTime());
     }
+
+    @Override
+    public String toString() {
+      return "SetPointTimeTuple{" + "setPoint=" + setPoint + ", time=" + time + '}';
+    }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Day day = (Day) o;
+
+    return new EqualsBuilder()
+        .append(getId(), day.getId())
+        .append(getName(), day.getName())
+        .append(getTimes(), day.getTimes())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getName())
+        .append(getTimes())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "Day{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", times=" + times + '}';
   }
 }

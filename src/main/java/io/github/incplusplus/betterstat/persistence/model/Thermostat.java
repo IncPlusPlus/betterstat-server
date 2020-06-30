@@ -1,5 +1,7 @@
 package io.github.incplusplus.betterstat.persistence.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -114,20 +116,68 @@ public class Thermostat {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Thermostat that = (Thermostat) o;
+
+    return new EqualsBuilder()
+        .append(isSetUp(), that.isSetUp())
+        .append(isHeatingSupported(), that.isHeatingSupported())
+        .append(isAirConditioningSupported(), that.isAirConditioningSupported())
+        .append(isFanSupported(), that.isFanSupported())
+        .append(getId(), that.getId())
+        .append(getName(), that.getName())
+        .append(getFanSetting(), that.getFanSetting())
+        .append(getState(), that.getState())
+        .append(getSchedule(), that.getSchedule())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(isSetUp())
+        .append(getName())
+        .append(isHeatingSupported())
+        .append(isAirConditioningSupported())
+        .append(isFanSupported())
+        .append(getFanSetting())
+        .append(getState())
+        .append(getSchedule())
+        .toHashCode();
+  }
+
+  @Override
   public String toString() {
     return "Thermostat{"
-        + ", id:'"
+        + "id='"
         + id
         + '\''
-        + ", name:'"
+        + ", setUp="
+        + setUp
+        + ", name='"
         + name
         + '\''
-        + ", heatingSupported:"
+        + ", heatingSupported="
         + heatingSupported
-        + ", airConditioningSupported:"
+        + ", airConditioningSupported="
         + airConditioningSupported
-        + ", fanSupported:"
+        + ", fanSupported="
         + fanSupported
+        + ", fanSetting="
+        + fanSetting
+        + ", state="
+        + state
+        + ", schedule="
+        + schedule
         + '}';
   }
 }

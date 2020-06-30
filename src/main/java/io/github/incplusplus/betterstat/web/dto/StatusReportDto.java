@@ -7,6 +7,8 @@ import io.github.incplusplus.betterstat.persistence.model.States;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class StatusReportDto {
 
@@ -87,5 +89,59 @@ public class StatusReportDto {
 
   public void setCurrentState(States currentState) {
     this.currentState = currentState;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    StatusReportDto that = (StatusReportDto) o;
+
+    return new EqualsBuilder()
+        .append(getId(), that.getId())
+        .append(getMostRecentIp(), that.getMostRecentIp())
+        .append(getDateTimeAccordingToDevice(), that.getDateTimeAccordingToDevice())
+        .append(getDateTimeReportReceived(), that.getDateTimeReportReceived())
+        .append(getTemperature(), that.getTemperature())
+        .append(getCurrentState(), that.getCurrentState())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getMostRecentIp())
+        .append(getDateTimeAccordingToDevice())
+        .append(getDateTimeReportReceived())
+        .append(getTemperature())
+        .append(getCurrentState())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "StatusReportDto{"
+        + "id='"
+        + id
+        + '\''
+        + ", mostRecentIp='"
+        + mostRecentIp
+        + '\''
+        + ", dateTimeAccordingToDevice="
+        + dateTimeAccordingToDevice
+        + ", dateTimeReportReceived="
+        + dateTimeReportReceived
+        + ", temperature="
+        + temperature
+        + ", currentState="
+        + currentState
+        + '}';
   }
 }

@@ -1,5 +1,7 @@
 package io.github.incplusplus.betterstat.persistence.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 
 public class User {
@@ -80,5 +82,62 @@ public class User {
 
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    User user = (User) o;
+
+    return new EqualsBuilder()
+        .append(isEnabled(), user.isEnabled())
+        .append(getId(), user.getId())
+        .append(getFirstName(), user.getFirstName())
+        .append(getLastName(), user.getLastName())
+        .append(getEmail(), user.getEmail())
+        .append(getPassword(), user.getPassword())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getFirstName())
+        .append(getLastName())
+        .append(getEmail())
+        .append(getPassword())
+        .append(isEnabled())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "User{"
+        + "id='"
+        + id
+        + '\''
+        + ", firstName='"
+        + firstName
+        + '\''
+        + ", lastName='"
+        + lastName
+        + '\''
+        + ", email='"
+        + email
+        + '\''
+        + ", password='"
+        + password
+        + '\''
+        + ", enabled="
+        + enabled
+        + '}';
   }
 }
