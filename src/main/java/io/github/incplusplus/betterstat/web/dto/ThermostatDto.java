@@ -4,22 +4,31 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.incplusplus.betterstat.persistence.model.FanSetting;
-import io.github.incplusplus.betterstat.persistence.model.Schedule;
 import io.github.incplusplus.betterstat.persistence.model.States;
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.Valid;
 
 public class ThermostatDto {
+
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
   private String id;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private boolean setUp;
 
   private String name;
   private boolean heatingSupported;
   private boolean airConditioningSupported;
   private boolean fanSupported;
+  // TODO: Should this be read only?
   private FanSetting fanSetting;
-  @Valid private Schedule schedule;
+  /*
+   * TODO: Instead of having an @Valid NON-DTO class be a field in a DTO, just don't expose that at all.
+   *  Only allow manipulation of the Schedule associated with a Thermostat through specific endpoints
+   *  which are meant to provide that functionality. Do this for the other DTO classes too.
+   */
+  //  @Valid private Schedule schedule;
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
@@ -32,15 +41,21 @@ public class ThermostatDto {
 
   public ThermostatDto(
       String id,
+      boolean setUp,
       String name,
       boolean heatingSupported,
       boolean airConditioningSupported,
-      boolean fanSupported) {
+      boolean fanSupported,
+      FanSetting fanSetting,
+      States state) {
     this.id = id;
+    this.setUp = setUp;
     this.name = name;
     this.heatingSupported = heatingSupported;
     this.airConditioningSupported = airConditioningSupported;
     this.fanSupported = fanSupported;
+    this.fanSetting = fanSetting;
+    this.state = state;
   }
 
   public String getId() {
@@ -49,6 +64,14 @@ public class ThermostatDto {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public boolean isSetUp() {
+    return setUp;
+  }
+
+  public void setSetUp(boolean setUp) {
+    this.setUp = setUp;
   }
 
   public String getName() {
@@ -97,14 +120,6 @@ public class ThermostatDto {
 
   public void setState(States state) {
     this.state = state;
-  }
-
-  public Schedule getSchedule() {
-    return schedule;
-  }
-
-  public void setSchedule(Schedule schedule) {
-    this.schedule = schedule;
   }
 
   @Override

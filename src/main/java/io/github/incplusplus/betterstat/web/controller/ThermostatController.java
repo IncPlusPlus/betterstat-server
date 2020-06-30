@@ -7,7 +7,6 @@ import io.github.incplusplus.betterstat.statemachine.StateHandler;
 import io.github.incplusplus.betterstat.web.dto.ThermostatDto;
 import io.github.incplusplus.betterstat.web.exception.ObjectNotFoundException;
 import io.github.incplusplus.betterstat.web.mappers.ThermostatMapper;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Device API", description = "The APIs that thermostat devices will interact with")
 @RestController
 @RequestMapping("/thermostat")
 public class ThermostatController {
@@ -76,6 +74,7 @@ public class ThermostatController {
     return mapper.toDto(thermostatService.updateThermostat(id, mapper.fromDto(thermostatDto)));
   }
 
+  // TODO: Delete the API credentials as well
   @DeleteMapping("/{id}")
   public ThermostatDto deleteThermostat(@PathVariable String id) throws ObjectNotFoundException {
     return mapper.toDto(thermostatService.deleteById(id));

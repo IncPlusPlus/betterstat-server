@@ -24,8 +24,7 @@ public class StatusReportDto {
   private BigDecimal temperature;
   private States currentState;
 
-  public StatusReportDto() {
-  }
+  public StatusReportDto() {}
 
   public StatusReportDto(
       String id,

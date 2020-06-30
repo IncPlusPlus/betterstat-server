@@ -8,19 +8,15 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class StatusReport {
 
-  @DBRef
-  Thermostat thermostat;
-  @NotNull
-  @Id
-  private String id;
+  @DBRef Thermostat thermostat;
+  @NotNull @Id private String id;
   private String mostRecentIp;
   private LocalDateTime dateTimeAccordingToDevice;
   private LocalDateTime dateTimeReportReceived;
   private BigDecimal temperature;
   private States currentState;
 
-  public StatusReport() {
-  }
+  public StatusReport() {}
 
   public StatusReport(
       Thermostat thermostat,

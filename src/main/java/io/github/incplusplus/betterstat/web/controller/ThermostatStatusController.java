@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Device API", description = "The APIs that thermostat devices will interact with")
 @RestController
-@RequestMapping("/thermostat/{thermostatId}/status")
+@RequestMapping("/thermostat-api/{thermostatId}/status")
 public class ThermostatStatusController {
 
   private final StatusReportService statusReportService;

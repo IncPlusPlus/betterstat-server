@@ -4,7 +4,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Thermostat {
+
   @Id private String id;
+  private boolean setUp;
   private String name;
   private boolean heatingSupported;
   private boolean airConditioningSupported;
@@ -20,15 +22,23 @@ public class Thermostat {
 
   public Thermostat(
       String id,
+      boolean setUp,
       String name,
       boolean heatingSupported,
       boolean airConditioningSupported,
-      boolean fanSupported) {
+      boolean fanSupported,
+      FanSetting fanSetting,
+      States state,
+      Schedule schedule) {
     this.id = id;
+    this.setUp = setUp;
     this.name = name;
     this.heatingSupported = heatingSupported;
     this.airConditioningSupported = airConditioningSupported;
     this.fanSupported = fanSupported;
+    this.fanSetting = fanSetting;
+    this.state = state;
+    this.schedule = schedule;
   }
 
   public String getId() {
@@ -37,6 +47,14 @@ public class Thermostat {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public boolean isSetUp() {
+    return setUp;
+  }
+
+  public void setSetUp(boolean setUp) {
+    this.setUp = setUp;
   }
 
   public String getName() {
