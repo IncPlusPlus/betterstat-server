@@ -17,11 +17,10 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - mvn clean install
-after_script:
+after_success:
   - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage --input-type jacoco -o coverage/codeclimate.unit.json target/site/jacoco/jacoco.xml
   - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage --input-type jacoco -o coverage/codeclimate.integration.json target/site/jacoco-it/jacoco.xml
   - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2
-after_success:
   - ./cc-test-reporter upload-coverage
   - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco/jacoco.xml -F unittests
   - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco-it/jacoco.xml -F integration
