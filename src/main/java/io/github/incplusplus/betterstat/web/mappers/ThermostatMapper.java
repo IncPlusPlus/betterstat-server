@@ -8,9 +8,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ThermostatMapper {
 
-  ThermostatDto toDTO(Thermostat thermostat);
+  ThermostatDto toDto(Thermostat thermostat);
 
-  Thermostat fromDTO(ThermostatDto thermostatDto);
+  Thermostat fromDto(ThermostatDto thermostatDto);
 
   List<ThermostatDto> mapThermostatsToThermostatDTO(List<Thermostat> thermostats);
 }
