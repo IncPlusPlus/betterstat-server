@@ -7,18 +7,23 @@ cache:
     - $HOME/.m2
 # See https://github.com/travis-ci/travis-ci/issues/8667
 install: true
-before_script:
+before_install:
   - 'curl -H ''Cache-Control: no-cache'' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh
     | sudo bash'
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
     > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
+before_script:
   - ./cc-test-reporter before-build
 script:
-  - mvn clean jacoco:prepare-agent install jacoco:report
+  - mvn clean install
+after_script:
+  - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage --input-type jacoco -o coverage/codeclimate.unit.json target/site/jacoco/jacoco.xml
+  - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage --input-type jacoco -o coverage/codeclimate.integration.json target/site/jacoco-it/jacoco.xml
+  - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2
 after_success:
-  - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage target/site/jacoco/jacoco.xml --input-type jacoco
   - ./cc-test-reporter upload-coverage
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco/jacoco.xml -F unittests
+  - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco-it/jacoco.xml -F integration
   - fossa init
   - fossa analyze
