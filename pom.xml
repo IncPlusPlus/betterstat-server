@@ -106,10 +106,21 @@
           </execution>
           <execution>
             <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+            <id>jacoco-initialize-integration</id>
+          </execution>
+          <execution>
+            <goals>
               <goal>report</goal>
             </goals>
             <id>jacoco-site</id>
-            <phase>package</phase>
+          </execution>
+          <execution>
+            <goals>
+              <goal>report-integration</goal>
+            </goals>
+            <id>jacoco-site-integration</id>
           </execution>
         </executions>
         <groupId>org.jacoco</groupId>
