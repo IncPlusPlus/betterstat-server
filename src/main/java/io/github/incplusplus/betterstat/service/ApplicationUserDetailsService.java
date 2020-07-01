@@ -2,8 +2,8 @@ package io.github.incplusplus.betterstat.service;
 
 import io.github.incplusplus.betterstat.persistence.model.User;
 import io.github.incplusplus.betterstat.persistence.repositories.UserRepository;
-import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +27,8 @@ public class ApplicationUserDetailsService implements UserDetailsService {
       throw new RuntimeException();
     }
     return new org.springframework.security.core.userdetails.User(
-        user.getEmail(), user.getPassword(), Collections.emptyList());
+        user.getEmail(),
+        user.getPassword(),
+        AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
   }
 }

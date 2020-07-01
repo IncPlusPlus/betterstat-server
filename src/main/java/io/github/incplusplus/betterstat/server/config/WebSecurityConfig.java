@@ -2,10 +2,8 @@ package io.github.incplusplus.betterstat.server.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,21 +19,21 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
-  }
-
   @Configuration
   @Order(1)
   public static class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("applicationUserDetailsService")
-    @Autowired
-    UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public ApiWebSecurityConfig(
+        @Qualifier("applicationUserDetailsService") UserDetailsService userDetailsService,
+        PasswordEncoder passwordEncoder) {
+      this.userDetailsService = userDetailsService;
+      this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -64,9 +62,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Order(2)
   public static class ApiTokenSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("thermostatApiUserUserDetailsService")
+    private final UserDetailsService userDetailsService;
+
     @Autowired
-    UserDetailsService userDetailsService;
+    public ApiTokenSecurityConfig(
+        @Qualifier("thermostatApiUserUserDetailsService") UserDetailsService userDetailsService) {
+      this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
