@@ -1,9 +1,0 @@
-server.port= 8080
-spring.data.mongodb.uri=mongodb://localhost/betterstat-server
-server.ssl.key-store= keystore.p12
-server.ssl.key-store-password= yourPassword
-server.ssl.keyStoreType= PKCS12
-server.ssl.keyAlias= tomcat
-server.ssl.enabled=true
-#management.server.port=9001
-#management.server.address=127.0.0.1
