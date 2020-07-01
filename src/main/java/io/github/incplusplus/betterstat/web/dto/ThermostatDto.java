@@ -6,20 +6,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.incplusplus.betterstat.persistence.model.FanSetting;
 import io.github.incplusplus.betterstat.persistence.model.States;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.data.annotation.Id;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ThermostatDto {
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
-  @Id
   private String id;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private boolean setUp;
 
   private String name;
   private boolean heatingSupported;
   private boolean airConditioningSupported;
   private boolean fanSupported;
+  // TODO: Should this be read only?
   private FanSetting fanSetting;
+  /*
+   * TODO: Instead of having an @Valid NON-DTO class be a field in a DTO, just don't expose that at all.
+   *  Only allow manipulation of the Schedule associated with a Thermostat through specific endpoints
+   *  which are meant to provide that functionality. Do this for the other DTO classes too.
+   */
+  //  @Valid private Schedule schedule;
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
@@ -32,15 +43,21 @@ public class ThermostatDto {
 
   public ThermostatDto(
       String id,
+      boolean setUp,
       String name,
       boolean heatingSupported,
       boolean airConditioningSupported,
-      boolean fanSupported) {
+      boolean fanSupported,
+      FanSetting fanSetting,
+      States state) {
     this.id = id;
+    this.setUp = setUp;
     this.name = name;
     this.heatingSupported = heatingSupported;
     this.airConditioningSupported = airConditioningSupported;
     this.fanSupported = fanSupported;
+    this.fanSetting = fanSetting;
+    this.state = state;
   }
 
   public String getId() {
@@ -49,6 +66,14 @@ public class ThermostatDto {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public boolean isSetUp() {
+    return setUp;
+  }
+
+  public void setSetUp(boolean setUp) {
+    this.setUp = setUp;
   }
 
   public String getName() {
@@ -100,20 +125,64 @@ public class ThermostatDto {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ThermostatDto that = (ThermostatDto) o;
+
+    return new EqualsBuilder()
+        .append(isSetUp(), that.isSetUp())
+        .append(isHeatingSupported(), that.isHeatingSupported())
+        .append(isAirConditioningSupported(), that.isAirConditioningSupported())
+        .append(isFanSupported(), that.isFanSupported())
+        .append(getId(), that.getId())
+        .append(getName(), that.getName())
+        .append(getFanSetting(), that.getFanSetting())
+        .append(getState(), that.getState())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(isSetUp())
+        .append(getName())
+        .append(isHeatingSupported())
+        .append(isAirConditioningSupported())
+        .append(isFanSupported())
+        .append(getFanSetting())
+        .append(getState())
+        .toHashCode();
+  }
+
+  @Override
   public String toString() {
-    return "Thermostat{"
-        + ", id:'"
+    return "ThermostatDto{"
+        + "id='"
         + id
         + '\''
-        + ", name:'"
+        + ", setUp="
+        + setUp
+        + ", name='"
         + name
         + '\''
-        + ", heatingSupported:"
+        + ", heatingSupported="
         + heatingSupported
-        + ", airConditioningSupported:"
+        + ", airConditioningSupported="
         + airConditioningSupported
-        + ", fanSupported:"
+        + ", fanSupported="
         + fanSupported
+        + ", fanSetting="
+        + fanSetting
+        + ", state="
+        + state
         + '}';
   }
 }
