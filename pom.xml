@@ -259,17 +259,17 @@
     <dependency>
       <artifactId>springdoc-openapi-ui</artifactId>
       <groupId>org.springdoc</groupId>
-      <version>1.4.2</version>
+      <version>${springdoc-openapi.version}</version>
     </dependency>
     <dependency>
       <artifactId>springdoc-openapi-security</artifactId>
       <groupId>org.springdoc</groupId>
-      <version>1.4.2</version>
+      <version>${springdoc-openapi.version}</version>
     </dependency>
     <dependency>
       <artifactId>springdoc-openapi-webmvc-core</artifactId>
       <groupId>org.springdoc</groupId>
-      <version>1.4.2</version>
+      <version>${springdoc-openapi.version}</version>
     </dependency>
 
     <!--        TESTS-->
@@ -374,6 +374,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <statemachine.version>2.2.0.RELEASE</statemachine.version>
+    <springdoc-openapi.version>1.4.2</springdoc-openapi.version>
   </properties>
 
   <repositories>
