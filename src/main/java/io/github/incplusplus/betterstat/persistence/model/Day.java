@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
@@ -14,7 +13,7 @@ import org.springframework.data.annotation.Id;
  * a single day.
  */
 public class Day {
-  @NotNull @Id private String id;
+  @Id private String id;
   private String name;
   private NavigableSet<SetPointTimeTuple> times = new TreeSet<>();
 
