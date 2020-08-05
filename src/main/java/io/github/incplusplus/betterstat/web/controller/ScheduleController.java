@@ -1,14 +1,17 @@
 package io.github.incplusplus.betterstat.web.controller;
 
+import io.github.incplusplus.betterstat.model.DayOfWeek;
 import io.github.incplusplus.betterstat.persistence.model.Schedule;
 import io.github.incplusplus.betterstat.service.ScheduleService;
 import io.github.incplusplus.betterstat.web.dto.ScheduleDto;
 import io.github.incplusplus.betterstat.web.exception.ObjectNotFoundException;
+import io.github.incplusplus.betterstat.web.mappers.DayMapper;
 import io.github.incplusplus.betterstat.web.mappers.ScheduleMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +30,8 @@ public class ScheduleController {
   private final ScheduleMapper scheduleMapper;
 
   @Autowired
-  public ScheduleController(ScheduleService scheduleService, ScheduleMapper scheduleMapper) {
+  public ScheduleController(
+      ScheduleService scheduleService, DayMapper dayMapper, ScheduleMapper scheduleMapper) {
     this.scheduleService = scheduleService;
     this.scheduleMapper = scheduleMapper;
   }
@@ -37,11 +41,11 @@ public class ScheduleController {
     return scheduleMapper.mapSchedulesToScheduleDto(scheduleService.findAll());
   }
 
-  @GetMapping("/{id}")
-  public ScheduleDto getSchedule(@PathVariable String id) throws ObjectNotFoundException {
-    Optional<Schedule> scheduleOptional = scheduleService.getScheduleById(id);
+  @GetMapping("/{scheduleId}")
+  public ScheduleDto getSchedule(@PathVariable String scheduleId) throws ObjectNotFoundException {
+    Optional<Schedule> scheduleOptional = scheduleService.getScheduleById(scheduleId);
     if (scheduleOptional.isEmpty()) {
-      throw new ObjectNotFoundException(id, Schedule.class);
+      throw new ObjectNotFoundException(scheduleId, Schedule.class);
     }
     return scheduleMapper.toDTO(scheduleOptional.get());
   }
@@ -52,16 +56,26 @@ public class ScheduleController {
         scheduleService.createSchedule(scheduleMapper.fromDto(scheduleDto)));
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/{scheduleId}")
   public ScheduleDto updateSchedule(
-      @PathVariable String id, @Valid @RequestBody ScheduleDto scheduleDto)
+      @PathVariable String scheduleId, @Valid @RequestBody ScheduleDto scheduleDto)
       throws ObjectNotFoundException {
     return scheduleMapper.toDTO(
-        scheduleService.updateSchedule(id, scheduleMapper.fromDto(scheduleDto)));
+        scheduleService.updateSchedule(scheduleId, scheduleMapper.fromDto(scheduleDto)));
   }
 
-  @DeleteMapping("/{id}")
-  public ScheduleDto deleteSchedule(@PathVariable String id) throws ObjectNotFoundException {
-    return scheduleMapper.toDTO(scheduleService.deleteById(id));
+  @PutMapping("/{scheduleId}/set{dayOfWeek}")
+  public ScheduleDto setDay(
+      @PathVariable String scheduleId,
+      @NotNull @RequestBody String dayId,
+      @PathVariable DayOfWeek dayOfWeek)
+      throws ObjectNotFoundException {
+    return scheduleMapper.toDTO(scheduleService.setDayOfWeek(scheduleId, dayOfWeek, dayId));
+  }
+
+  @DeleteMapping("/{scheduleId}")
+  public ScheduleDto deleteSchedule(@PathVariable String scheduleId)
+      throws ObjectNotFoundException {
+    return scheduleMapper.toDTO(scheduleService.deleteById(scheduleId));
   }
 }

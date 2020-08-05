@@ -36,7 +36,9 @@ public class ThermostatSetupController {
   }
 
   @GetMapping("/ports")
-  public List<DescriptivePortNameSystemPortNamePair> getPorts() {
+  public List<DescriptivePortNameSystemPortNamePair> getPorts(
+      @SuppressWarnings({"unused", "RedundantSuppression"}) @PathVariable("id")
+          String thermostatId) {
     return setupService.getPorts();
   }
 

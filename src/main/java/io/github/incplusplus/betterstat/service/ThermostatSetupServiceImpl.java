@@ -78,7 +78,8 @@ public class ThermostatSetupServiceImpl implements ThermostatSetupService {
     // Check all the existing
     // Allow us to re-init a failed setup, otherwise, only one setup process may occur at a time
     if (nonNull(setupHelpers.get(thermostatId))) {
-      ThermostatApiUser apiCredentials = setupHelpers.get(thermostatId).getApiCredentials();
+      ThermostatApiUser apiCredentials =
+          setupHelpers.get(thermostatId).getApiCredentialsPWEncoded();
       if (nonNull(apiCredentials))
       // Delete credentials from the previous setup attempt
       {
@@ -102,8 +103,8 @@ public class ThermostatSetupServiceImpl implements ThermostatSetupService {
       throw new ObjectNotFoundException(thermostatId, Thermostat.class);
     }
     Thermostat thermostat = thermostatOptional.get();
-    setupHelpers.get(thermostatId).setApiCredentials(createThermostatApiUser(thermostat));
-    ThermostatApiUser apiCredentials = setupHelpers.get(thermostatId).getApiCredentials();
+    ThermostatApiUser apiCredentials = createThermostatApiUser(thermostat);
+    setupHelpers.get(thermostatId).setApiCredentials(apiCredentials);
     /*
      * We kept the password in the output of createThermostatApiUser() so that the Arduino had the real password.
      * Now we encode it for safe keeping.
@@ -113,7 +114,9 @@ public class ThermostatSetupServiceImpl implements ThermostatSetupService {
             apiCredentials.getThermostat(),
             apiCredentials.getUsername(),
             passwordEncoder.encode(apiCredentials.getPassword()));
-    thermostatApiUserRepository.save(apiCredentialsPWEncoded);
+    setupHelpers
+        .get(thermostatId)
+        .setApiCredentialsPWEncoded(thermostatApiUserRepository.save(apiCredentialsPWEncoded));
     /*
      TODO: Add a warning system that holds a backlog of warnings that the user should be able to
       view in the app. An example of an important warning would be if a thermostat is trying to
@@ -465,6 +468,7 @@ public class ThermostatSetupServiceImpl implements ThermostatSetupService {
     private int hostPort;
     private String serverHostname;
     private ThermostatApiUser apiCredentials;
+    private ThermostatApiUser apiCredentialsPWEncoded;
 
     public ThermostatSetupHelper(String thermostatId) {
       this.thermostatId = thermostatId;
@@ -595,6 +599,14 @@ public class ThermostatSetupServiceImpl implements ThermostatSetupService {
 
     public void setHostPort(int hostPort) {
       this.hostPort = hostPort;
+    }
+
+    public ThermostatApiUser getApiCredentialsPWEncoded() {
+      return apiCredentialsPWEncoded;
+    }
+
+    public void setApiCredentialsPWEncoded(ThermostatApiUser apiCredentialsPWEncoded) {
+      this.apiCredentialsPWEncoded = apiCredentialsPWEncoded;
     }
   }
 }

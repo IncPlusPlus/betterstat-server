@@ -25,12 +25,10 @@ public class ThermostatDto {
   private boolean fanSupported;
   // TODO: Should this be read only?
   private FanSetting fanSetting;
-  /*
-   * TODO: Instead of having an @Valid NON-DTO class be a field in a DTO, just don't expose that at all.
-   *  Only allow manipulation of the Schedule associated with a Thermostat through specific endpoints
-   *  which are meant to provide that functionality. Do this for the other DTO classes too.
-   */
-  //  @Valid private Schedule schedule;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private ScheduleDto schedule;
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
@@ -49,6 +47,7 @@ public class ThermostatDto {
       boolean airConditioningSupported,
       boolean fanSupported,
       FanSetting fanSetting,
+      ScheduleDto schedule,
       States state) {
     this.id = id;
     this.setUp = setUp;
@@ -57,6 +56,7 @@ public class ThermostatDto {
     this.airConditioningSupported = airConditioningSupported;
     this.fanSupported = fanSupported;
     this.fanSetting = fanSetting;
+    this.schedule = schedule;
     this.state = state;
   }
 
@@ -114,6 +114,14 @@ public class ThermostatDto {
 
   public void setFanSetting(FanSetting fanSetting) {
     this.fanSetting = fanSetting;
+  }
+
+  public ScheduleDto getSchedule() {
+    return schedule;
+  }
+
+  public void setSchedule(ScheduleDto schedule) {
+    this.schedule = schedule;
   }
 
   public States getState() {

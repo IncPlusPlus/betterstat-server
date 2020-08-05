@@ -1,5 +1,6 @@
 package io.github.incplusplus.betterstat.service;
 
+import io.github.incplusplus.betterstat.model.DayOfWeek;
 import io.github.incplusplus.betterstat.persistence.model.Day;
 import io.github.incplusplus.betterstat.persistence.model.Schedule;
 import io.github.incplusplus.betterstat.web.exception.ObjectNotFoundException;
@@ -28,4 +29,7 @@ public interface ScheduleService {
   boolean existsById(String id);
 
   Schedule deleteById(String id) throws ObjectNotFoundException;
+
+  Schedule setDayOfWeek(String scheduleId, DayOfWeek dayOfWeek, String dayId)
+      throws ObjectNotFoundException;
 }

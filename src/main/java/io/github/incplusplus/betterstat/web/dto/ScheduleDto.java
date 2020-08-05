@@ -3,26 +3,45 @@ package io.github.incplusplus.betterstat.web.dto;
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.incplusplus.betterstat.persistence.model.Day;
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ScheduleDto {
+
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @Schema(accessMode = READ_ONLY)
   private String id;
 
-  @Valid @NotNull private String name;
-  @Valid @NotNull private Day sunday;
-  @Valid @NotNull private Day monday;
-  @Valid @NotNull private Day tuesday;
-  @Valid @NotNull private Day wednesday;
-  @Valid @NotNull private Day thursday;
-  @Valid @NotNull private Day friday;
-  @Valid @NotNull private Day saturday;
+  private String name;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto sunday;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto monday;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto tuesday;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto wednesday;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto thursday;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto friday;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @Schema(accessMode = READ_ONLY)
+  private DayDto saturday;
 
   @SuppressWarnings("unused")
   public ScheduleDto() {}
@@ -30,13 +49,13 @@ public class ScheduleDto {
   public ScheduleDto(
       String id,
       String name,
-      Day sunday,
-      Day monday,
-      Day tuesday,
-      Day wednesday,
-      Day thursday,
-      Day friday,
-      Day saturday) {
+      DayDto sunday,
+      DayDto monday,
+      DayDto tuesday,
+      DayDto wednesday,
+      DayDto thursday,
+      DayDto friday,
+      DayDto saturday) {
     this.id = id;
     this.name = name;
     this.sunday = sunday;
@@ -64,59 +83,59 @@ public class ScheduleDto {
     this.name = name;
   }
 
-  public Day getSunday() {
+  public DayDto getSunday() {
     return sunday;
   }
 
-  public void setSunday(Day sunday) {
+  public void setSunday(DayDto sunday) {
     this.sunday = sunday;
   }
 
-  public Day getMonday() {
+  public DayDto getMonday() {
     return monday;
   }
 
-  public void setMonday(Day monday) {
+  public void setMonday(DayDto monday) {
     this.monday = monday;
   }
 
-  public Day getTuesday() {
+  public DayDto getTuesday() {
     return tuesday;
   }
 
-  public void setTuesday(Day tuesday) {
+  public void setTuesday(DayDto tuesday) {
     this.tuesday = tuesday;
   }
 
-  public Day getWednesday() {
+  public DayDto getWednesday() {
     return wednesday;
   }
 
-  public void setWednesday(Day wednesday) {
+  public void setWednesday(DayDto wednesday) {
     this.wednesday = wednesday;
   }
 
-  public Day getThursday() {
+  public DayDto getThursday() {
     return thursday;
   }
 
-  public void setThursday(Day thursday) {
+  public void setThursday(DayDto thursday) {
     this.thursday = thursday;
   }
 
-  public Day getFriday() {
+  public DayDto getFriday() {
     return friday;
   }
 
-  public void setFriday(Day friday) {
+  public void setFriday(DayDto friday) {
     this.friday = friday;
   }
 
-  public Day getSaturday() {
+  public DayDto getSaturday() {
     return saturday;
   }
 
-  public void setSaturday(Day saturday) {
+  public void setSaturday(DayDto saturday) {
     this.saturday = saturday;
   }
 
