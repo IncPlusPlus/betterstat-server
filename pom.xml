@@ -62,7 +62,7 @@
           </execution>
         </executions>
         <groupId>pl.project13.maven</groupId>
-        <version>4.0.0</version>
+        <version>4.0.4</version>
       </plugin>
       <plugin>
         <artifactId>fmt-maven-plugin</artifactId>
