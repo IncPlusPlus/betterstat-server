@@ -374,7 +374,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <statemachine.version>2.2.0.RELEASE</statemachine.version>
-    <springdoc-openapi.version>1.4.2</springdoc-openapi.version>
+    <springdoc-openapi.version>1.6.7</springdoc-openapi.version>
   </properties>
 
   <repositories>
