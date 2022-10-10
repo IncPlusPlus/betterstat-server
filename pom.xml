@@ -370,7 +370,7 @@
     <java.version>14</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+    <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <statemachine.version>2.2.0.RELEASE</statemachine.version>
