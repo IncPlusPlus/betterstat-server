@@ -311,7 +311,7 @@
         <groupId>org.springframework.boot</groupId>
         <scope>import</scope>
         <type>pom</type>
-        <version>2.4.0-SNAPSHOT</version>
+        <version>3.0.0-RC2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
